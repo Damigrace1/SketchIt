@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:sketch_it/screens/home_screen.dart';
 import 'package:sketch_it/screens/widgets/custom_button.dart';
 import 'package:sketch_it/utils/colors.dart';
 
@@ -89,7 +92,9 @@ class SplashScreen extends StatelessWidget {
             CustomButton(text: 'Sign Up', onPressed: (){},
             width: 167.w,),
             SizedBox(height: 8.h,),
-            CustomButton(text: 'Login', onPressed: (){},
+            CustomButton(text: 'Login', onPressed: (){
+              Get.offAll(()=>HomeScreen());
+            },
               fillColor: kGrey,
               textColor: Colors.black,
               width: 167.w,)
