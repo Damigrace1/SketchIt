@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sketch_it/controller.dart/auth_controller.dart';
 import 'package:sketch_it/screens/auth/sign_in.dart';
-import 'package:sketch_it/screens/home_screen.dart';
 import 'package:sketch_it/screens/username/username.dart';
 import 'package:sketch_it/screens/widgets/spacing.dart';
 import 'package:sketch_it/utils/colors.dart';

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sketch_it/screens/home_screen.dart';
@@ -12,12 +13,15 @@ import 'package:sketch_it/utils/colors.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await dotenv.load();
+
   await Firebase.initializeApp(
-      options: const FirebaseOptions(
-          apiKey: 'AIzaSyAHxwOXyKYoQTv6ZrZZK6tglbVfYYZRfJU',
-          appId: '1:57464665328:android:2bdf0e129bc9ec3dc47e35',
-          messagingSenderId: '57464665328',
-          projectId: 'sketchit-fa7cc'));
+      options: FirebaseOptions(
+    apiKey: dotenv.env['apiKey']!,
+    appId: dotenv.env['appId']!,
+    messagingSenderId: dotenv.env['messagingSenderId']!,
+    projectId: dotenv.env['projectId']!,
+  ));
 
   runApp(const SketchItApp());
 }
