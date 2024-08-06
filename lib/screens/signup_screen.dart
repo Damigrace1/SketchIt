@@ -17,19 +17,13 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 48.h,
-        actions: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Image.asset(
-                alignment: Alignment.bottomLeft,
-                'assets/images/logo_row.png',
-                width: 104.w,
-                height: 40.h,
-              ),
-            ],
-          )
-        ],
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset(
+            'assets/images/logo_row.png',
+          ),
+        ),
+        leadingWidth: 144.h,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
