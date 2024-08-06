@@ -66,10 +66,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_drawing_board
-      sha256: bb635eeffafe678bff9aded8d8b833bf8b62c71e71aa8b08a2701f50a9135698
+      sha256: "82700847d7f367c9af1eaf186c88f74a6be821dbe783871e4736bf724f015192"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.1"
+    version: "0.7.0+2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -176,6 +176,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  stack_board:
+    dependency: "direct main"
+    description:
+      name: stack_board
+      sha256: "7a9f2fb360229992053a9123197cc21753d6cb44a29ea20efbc8f79830841bbb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.6+1"
   stack_trace:
     dependency: transitive
     description:

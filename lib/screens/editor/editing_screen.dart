@@ -1,11 +1,17 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
+// import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:sketch_it/screens/widgets/custom_button.dart';
+import 'package:stack_board/flutter_stack_board.dart';
+import 'package:stack_board/stack_board_item.dart';
+import 'package:stack_board/stack_items.dart';
+// import 'package:stack_board/stack_board.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/common_functions.dart';
@@ -20,7 +26,79 @@ class EditingScreen extends StatefulWidget {
 class _EditingScreenState extends State<EditingScreen> {
   double position = 0;
   final DrawingController _drawingController = DrawingController();
+  final StackBoardController _stackBoardController = StackBoardController();
 
+  void _addTextToCanvas() {
+    _stackBoardController.addItem(
+      StackTextItem(
+        size: const Size(200, 100),
+        content: TextItemContent(data: '哈哈哈哈哈'),
+      ),
+    );
+  }
+
+  // void _addTextToCanvas([String text = '']) {
+  //   final textStyle = TextStyle(
+  //     color: Colors.black,
+  //     fontSize: 20,
+  //   );
+
+  // _drawingController.addContent(
+  //   DrawingContent(
+  //     painter: TextPainter(
+  //       text: TextSpan(
+  //         text: text.isNotEmpty ? text : 'Your text here',
+  //         style: textStyle,
+  //       ),
+  //       textDirection: TextDirection.ltr,
+  //     ),
+  //     position: Offset(100, 100), // You can adjust this position
+  //   ),
+  // );
+
+  //   _stackBoardController.addItem(
+  //     StackBoardItem(
+  //       child: Text(
+  //         text.isNotEmpty ? text : 'Your text here',
+  //         style: textStyle,
+  //       ),
+  //       position: Offset(position, 100), // You can adjust this position
+  //     ),
+  //   );
+  // }
+
+  Future<void> _showTextInputDialog() async {
+    String inputText = '';
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Add Text'),
+          content: TextField(
+            onChanged: (value) {
+              inputText = value;
+            },
+            decoration: InputDecoration(hintText: "Enter your text"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.pop(context);
+                _addTextToCanvas();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +132,23 @@ class _EditingScreenState extends State<EditingScreen> {
       body: Stack(
         children: [
           Container(
-            child:  DrawingBoard(
-              controller: _drawingController,
-              background: Container(width: Get.width, height: Get.height, color: Colors.white),
-             // showDefaultActions: true,
-             // showDefaultTools: true,
+            child: StackBoard(
+              controller: _stackBoardController,
+              background: Container(
+                  width: Get.width, height: Get.height, color: Colors.white),
+              // showDefaultActions: true,
+              // showDefaultTools: true,
             ),
           ),
+          // Container(
+          //   child: StackBoard(
+          //     controller: _stackBoardController,
+          //     background: Container(
+          //         width: Get.width, height: Get.height, color: Colors.white),
+          //     // showDefaultActions: true,
+          //     // showDefaultTools: true,
+          //   ),
+          // ),
           Positioned(
             top: 68.h,
             left: 0,
@@ -125,7 +213,7 @@ class _EditingScreenState extends State<EditingScreen> {
                   ),
                   InkWell(
                     onTapDown: (TapDownDetails details) {
-                     // _drawingController
+                      // _drawingController
                       // final tapPosition = details.globalPosition;
                       // setState(() {
                       //   position = 195.h;
@@ -157,7 +245,7 @@ class _EditingScreenState extends State<EditingScreen> {
                     height: 32.69.h,
                   ),
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       _drawingController.redo();
                     },
                     child: Image.asset(
@@ -169,9 +257,9 @@ class _EditingScreenState extends State<EditingScreen> {
                     height: 32.69.h,
                   ),
                   InkWell(
-                   onTap: (){
-                     _drawingController.undo();
-                   },
+                    onTap: () {
+                      _drawingController.undo();
+                    },
                     child: Image.asset(
                       'assets/toolbar/undo.png',
                       width: 25.w,
@@ -180,6 +268,16 @@ class _EditingScreenState extends State<EditingScreen> {
                   SizedBox(
                     height: 32.69.h,
                   ),
+                  InkWell(
+                    onTap: () {
+                      // _addTextToCanvas();
+                      _showTextInputDialog();
+                    },
+                    child: Image.asset(
+                      'assets/icons/text.png', // Make sure you have this icon in your assets
+                      width: 25.w,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -187,7 +285,10 @@ class _EditingScreenState extends State<EditingScreen> {
           Positioned(
               top: 95.h + position,
               left: 57.w,
-              child: Image.asset('assets/icons/selected.png',width: 22.w,))
+              child: Image.asset(
+                'assets/icons/selected.png',
+                width: 22.w,
+              ))
         ],
       ),
     );
