@@ -68,39 +68,43 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
+
         children: [
-          Image.asset('assets/images/pencil_tree.png'),
-          Image.asset('assets/images/logo_row.png',width: 104.w,)
+          Flexible(child: Image.asset('assets/images/pencil_tree.png')),
+          Image.asset('assets/images/logo_row.png',width: 104.w,),
+          SizedBox(height: 7.h,),
+          Container(
+            height: 240.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(13.r),
+                  topLeft: Radius.circular(13.r),
+                ),
+                color: kGrey
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Start drawing new ideas and\nshare them with your friends',
+                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),),
+                SizedBox(height: 21.h,),
+                CustomButton(text: 'Sign Up', onPressed: (){},
+                  width: 167.w,),
+                SizedBox(height: 8.h,),
+                CustomButton(text: 'Login', onPressed: (){
+                  Get.offAll(()=>HomeScreen());
+                },
+                  fillColor: kGrey,
+                  textColor: Colors.black,
+                  width: 167.w,)
+              ],
+            ),
+          )
         ],
       ),
-      bottomSheet: Container(
-        height: 240.h,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(13.r),
-            topLeft: Radius.circular(13.r),
-          ),
-          color: kGrey
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Start drawing new ideas and\nshare them with your friends',
-            style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),),
-            SizedBox(height: 21.h,),
-            CustomButton(text: 'Sign Up', onPressed: (){},
-            width: 167.w,),
-            SizedBox(height: 8.h,),
-            CustomButton(text: 'Login', onPressed: (){
-              Get.offAll(()=>HomeScreen());
-            },
-              fillColor: kGrey,
-              textColor: Colors.black,
-              width: 167.w,)
-          ],
-        ),
-      )
+
+
     );
   }
 }
