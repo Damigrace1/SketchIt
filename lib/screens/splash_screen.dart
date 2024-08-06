@@ -15,8 +15,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // _addTestLine();
-    //print(_drawingController.getJsonList());
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -39,9 +38,11 @@ class SplashScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Start drawing new ideas and\nshare them with your friends',
-                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),),
+                  style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
                 SizedBox(height: 21.h,),
-                CustomButton(text: 'Sign Up', onPressed: (){},
+                CustomButton(text: 'Sign Up', onPressed: (){
+                  Get.to(()=>SignUpPage());
+                },
                   width: 167.w,),
                 SizedBox(height: 8.h,),
                 CustomButton(text: 'Login', onPressed: (){

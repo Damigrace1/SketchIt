@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
+import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -38,6 +39,7 @@ class _EditingScreenState extends State<EditingScreen> {
   Widget build(BuildContext context) {
 
     return GetBuilder<EditorController>(builder: (EditorController controller) {
+     // controller.drawingController.setPaintContent(Eraser());
       return  Scaffold(
         appBar: AppBar(
           toolbarHeight: 48.h,
@@ -67,23 +69,23 @@ class _EditingScreenState extends State<EditingScreen> {
         ),
         body: Stack(
           children: [
-            Container(
-              child:  DrawingBoard(
-                controller: controller.drawingController,
-                background:
-                controller.imageToBeEdited != null ? Image.file(
-                  controller.imageToBeEdited!
-                ) : Container(
-                  color: controller.canvasColor,
-                ),
-                // showDefaultActions: true,
-                // showDefaultTools: true,
+            DrawingBoard(
+              controller: controller.drawingController,
+              background:
+              controller.imageToBeEdited != null ? Image.file(
+                controller.imageToBeEdited!
+              ) : Container(
+                width: Get.width,
+                height: Get.height,
+                color: controller.canvasColor,
               ),
+              // showDefaultActions: true,
+              // showDefaultTools: true,
             ),
             Positioned(
               top: 68.h,
               left: 0,
-              child: ToolBar(drawingController: controller.drawingController,),
+              child: ToolBar(),
             ),
             // Positioned(
             //     top: 95.h + position,
