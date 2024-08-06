@@ -11,6 +11,7 @@ class CustomButton extends StatelessWidget {
         required this.onPressed,
         this.fillColor,
         this.width,
+        this.height,
         this.enabled = true, this.textColor});
   final bool filled;
   final String text;
@@ -18,15 +19,18 @@ class CustomButton extends StatelessWidget {
   final Color? fillColor;
   final Color? textColor;
   final double? width;
+  final double? height;
   bool enabled;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: width ?? double.infinity,
+      height: height?? 49.h,
       child: ElevatedButton(
         onPressed:onPressed,
-        style: ElevatedButton.styleFrom(
 
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.zero,
           backgroundColor: filled
               ? fillColor?.withOpacity(enabled ? 1 : 0.4) ??
               Colors.black.withOpacity(enabled ? 1 : 0.4)
