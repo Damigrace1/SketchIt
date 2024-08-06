@@ -1,11 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/get.dart';
+import 'package:sketch_it/screens/home_screen.dart';
 import 'package:sketch_it/screens/splash_screen.dart';
+import 'package:sketch_it/screens/username/username.dart';
 import 'package:sketch_it/utils/colors.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: 'AIzaSyAHxwOXyKYoQTv6ZrZZK6tglbVfYYZRfJU',
+          appId: '1:57464665328:android:2bdf0e129bc9ec3dc47e35',
+          messagingSenderId: '57464665328',
+          projectId: 'sketchit-fa7cc'));
+
   runApp(const SketchItApp());
 }
 
@@ -21,9 +34,53 @@ class SketchItApp extends StatelessWidget {
             title: 'Tap Card',
             theme: ThemeData(colorSchemeSeed: kPrimary),
             debugShowCheckedModeBanner: false,
-            home: const SplashScreen(),
+            home: const Mainpage(),
           );
         });
   }
 }
 
+class Mainpage extends StatelessWidget {
+  const Mainpage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseFirestore store = FirebaseFirestore.instance;
+
+    return Scaffold(
+      body: StreamBuilder<User?>(
+          stream: auth.authStateChanges(),
+          builder: (context, snapshot) {
+            Future<String> checkdata() async {
+              var collection = store.collection('username');
+              final user = auth.currentUser!;
+
+              var docSnapshot = await collection.doc(user.uid).get();
+
+              return docSnapshot.data()!['username'];
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text('Something went wrong'),
+              );
+            }
+            if (snapshot.hasData) {
+              if (checkdata().isNull) {
+                return const Username();
+              } else {
+                return const HomeScreen();
+              }
+            } else {
+              return const SplashScreen();
+            }
+          }),
+    );
+  }
+}
