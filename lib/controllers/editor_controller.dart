@@ -7,13 +7,24 @@ import 'package:get/get.dart';
 
 class EditorController extends GetxController{
  File?  imageToBeEdited;
- DrawingController drawingController  = DrawingController();
+ late DrawingController drawingController;
+ double strokeWidth = 9;
  Color canvasColor = Colors.white;
-
+@override
+  void onInit() {
+    // TODO: implement onInit
+ drawingController  = DrawingController();
+    super.onInit();
+  }
  void updateImage(File v){
   imageToBeEdited = v;
   update();
  }
+void updateStrokeWidth(double v){
+ strokeWidth = v;
+ drawingController.setStyle(strokeWidth: v);
+ update();
+}
 
  void setCanvasColor(Color v){
   canvasColor = v;
