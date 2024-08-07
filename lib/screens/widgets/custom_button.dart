@@ -7,19 +7,21 @@ class CustomButton extends StatelessWidget {
   CustomButton(
       {super.key,
         this.filled = true,
-        required this.text,
+         this.text,
         required this.onPressed,
         this.fillColor,
         this.width,
         this.height,
-        this.enabled = true, this.textColor});
+        this.enabled = true, this.textColor, this.child}) : assert (child != null ||
+  text != null);
   final bool filled;
-  final String text;
+  final String? text;
   final Function() onPressed;
   final Color? fillColor;
   final Color? textColor;
   final double? width;
   final double? height;
+  final Widget? child;
   bool enabled;
   @override
   Widget build(BuildContext context) {
@@ -42,8 +44,8 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(4.r),
           ),
         ),
-        child: Text(
-          text,
+        child: child?? Text(
+          text!,
           style: TextStyle(color: textColor?.withOpacity(enabled ? 1 : 0.5) ??
           Colors.white.withOpacity(enabled ? 1 : 0.5)),
         ),
