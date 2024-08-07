@@ -41,7 +41,7 @@ class SketchItApp extends StatelessWidget {
             theme: ThemeData(colorSchemeSeed: kPrimary),
             debugShowCheckedModeBanner: false,
             home:
-            const SplashScreen()
+            const HomeScreen()
             // Author: Dami
             // Note: You can change the entry point if your task needs user to sign up.....
           //  const Mainpage(),

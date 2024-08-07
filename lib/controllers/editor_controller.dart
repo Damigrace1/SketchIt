@@ -12,18 +12,12 @@ import 'package:stack_board/flutter_stack_board.dart';
 
 
 import '../controller.dart/auth_controller.dart';
-class EditorController extends GetxController{
- File?  imageToBeEdited;
- late DrawingController drawingController;
- double strokeWidth = 9;
- Color canvasColor = Colors.white;
- bool showToolbar = true;
- int selectedToolId = 2;
- late StackBoardController textController ;
+
 
 class EditorController extends GetxController {
   File? imageToBeEdited;
   late DrawingController drawingController;
+  late StackBoardController textController;
   double strokeWidth = 9;
   Color canvasColor = Colors.white;
   bool showToolbar = true;
