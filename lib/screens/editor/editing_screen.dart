@@ -21,74 +21,121 @@ class EditingScreen extends StatefulWidget {
   State<EditingScreen> createState() => _EditingScreenState();
 }
 
-
 double position = 0;
 
-
 class _EditingScreenState extends State<EditingScreen> {
-
-
-@override
+  @override
   void initState() {
     // TODO: implement initState
-  Get.put(EditorController());
+    Get.put(EditorController());
     super.initState();
   }
 
+  double sliderValue = 5;
   @override
   Widget build(BuildContext context) {
-
-    return GetBuilder<EditorController>(builder: (EditorController controller) {
-     // controller.drawingController.setPaintContent(Eraser());
-      return  Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 48.h,
-          backgroundColor: kGrey,
-          actions: [
-            CustomButton(
-              text: 'Save',
-              onPressed: () {},
-              width: 65.w,
-              height: 28.h,
-            ),
-            SizedBox(
-              width: 14.w,
-            ),
-          ],
-          title: Text(
-            'My Work',
-            style: TextStyle(fontWeight: FontWeight.w500),
-          ),
-        ),
-        body: Stack(
-          children: [
-            DrawingBoard(
-              controller: controller.drawingController,
-              background:
-              controller.imageToBeEdited != null ? Image.file(
-                controller.imageToBeEdited!
-              ) : Container(
-                width: Get.width,
-                height: Get.height,
-                color: controller.canvasColor,
+    return GetBuilder<EditorController>(
+      builder: (EditorController controller) {
+        return Scaffold(
+          appBar: AppBar(toolbarHeight: 0, backgroundColor: kGrey,),
+          body: Column(
+            children: [
+              AnimatedContainer(
+                height: controller.showToolbar ? 48.h : 0,
+                duration: Duration(milliseconds: 200),
+                child: AppBar(
+                  toolbarHeight: 48.h,
+                  backgroundColor: kGrey,
+                  actions: [
+                    CustomButton(
+                      text: 'Save',
+                      onPressed: () {},
+                      width: 65.w,
+                      height: 28.h,
+                    ),
+                    SizedBox(
+                      width: 14.w,
+                    ),
+                  ],
+                  title: Text(
+                    'My Work',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                ),
               ),
-              // showDefaultActions: true,
-              // showDefaultTools: true,
-            ),
-            Positioned(
-              top: 68.h,
-              left: 0,
-              child: ToolBar(),
-            ),
-            // Positioned(
-            //     top: 95.h + position,
-            //     left: 57.w,
-            //     child: Image.asset('assets/icons/selected.png',width: 22.w,))
-          ],
-        ),
-      );
-    },);
+              Expanded(
+                child: Stack(
+                  children: [
+                    DrawingBoard(
+                      controller: controller.drawingController,
+                      background: controller.imageToBeEdited != null
+                          ? Image.file(controller.imageToBeEdited!)
+                          : Container(
+                              width: Get.width,
+                              height: Get.height,
+                              color: controller.canvasColor,
+                            ),
+                      // showDefaultActions: true,
+                      // showDefaultTools: true,
+                    ),
+                    Positioned(
+                      top: 68.h,
+                      left: 0,
+                      child: ToolBar(),
+                    ),
+                      Positioned(
+                        top: 24.h,
+                        right: 28.w,
+                        child: AnimatedContainer(
+                          width: !controller.showToolbar ? 31.w : 0,
+                          duration: Duration(milliseconds: 200),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            onTap: () {
+                              controller.showToolbar = true;
+                              controller.update();
+                            },
+                            child: Image.asset(
+                              'assets/icons/minimize.png',
+                              width: 31.w,
+                            ),
+                          ),
+                        ),
+                      ),
+                    Positioned(
+                        bottom: 0,
+                        child: AnimatedContainer(
+                            duration: Duration(milliseconds: 200),
+                            height: controller.showToolbar ? 40.h : 0,
+                          color: kGrey,
+                          width: Get.width,
+                          alignment: Alignment.center,
+                         // height: 40.h,
+                          child: Visibility(
+                            visible: controller.showToolbar ,
+                            child: Slider(
+                              value: sliderValue,
+                              min: 1,
+                              max: 50,
+                              onChanged: (double value) {
+                                setState(() {
+                                  sliderValue = value;
+                                });
+                                controller.drawingController.setStyle(
+                                  strokeWidth: value
+                                );
+                              },
+                
+                            ),
+                          )
+                        ))
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
-
-

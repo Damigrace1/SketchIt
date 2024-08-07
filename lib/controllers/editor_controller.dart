@@ -10,6 +10,10 @@ class EditorController extends GetxController{
  late DrawingController drawingController;
  double strokeWidth = 9;
  Color canvasColor = Colors.white;
+ bool showToolbar = true;
+ int selectedToolId = 2;
+
+
 @override
   void onInit() {
     // TODO: implement onInit
