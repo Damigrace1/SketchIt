@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sketch_it/controllers/editor_controller.dart';
 import 'package:sketch_it/screens/widgets/custom_button.dart';
 import 'package:sketch_it/utils/colors.dart';
+import 'package:stack_board/stack_items.dart';
 
 import '../../../utils/common_functions.dart';
 import '../../widgets/tool_bar_item.dart';
@@ -97,7 +98,14 @@ class _ToolBarState extends State<ToolBar> {
                         children: [
                           Row(
                             children: [
-                              CustomButton( onPressed: (){},
+                              CustomButton( onPressed: (){
+                                Navigator.pop(context);
+                                controller.textController.addItem(
+                                  StackTextItem(
+                                    size: const Size(200, 100),
+                                    content: TextItemContent(data: 'New Text',style: TextStyle(color: Colors.black)),
+                                  )
+                                );                              },
                                 width: 44.w,height: 38.h,filled: false,child:
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,

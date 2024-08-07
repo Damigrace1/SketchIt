@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:get/get.dart';
+import 'package:stack_board/flutter_stack_board.dart';
 
 class EditorController extends GetxController{
  File?  imageToBeEdited;
@@ -12,12 +13,14 @@ class EditorController extends GetxController{
  Color canvasColor = Colors.white;
  bool showToolbar = true;
  int selectedToolId = 2;
+ late StackBoardController textController ;
 
 
 @override
   void onInit() {
     // TODO: implement onInit
  drawingController  = DrawingController();
+ textController = StackBoardController();
     super.onInit();
   }
  void updateImage(File v){
