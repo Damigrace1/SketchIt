@@ -41,8 +41,12 @@ class _EditingScreenState extends State<EditingScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<EditorController>(
       builder: (EditorController controller) {
+        print(controller.drawingController.getJsonList());
         return Scaffold(
-          appBar: AppBar(toolbarHeight: 0, backgroundColor: kGrey,),
+          appBar: AppBar(
+            toolbarHeight: 0,
+            backgroundColor: kGrey,
+          ),
           body: Column(
             children: [
               AnimatedContainer(
@@ -53,8 +57,17 @@ class _EditingScreenState extends State<EditingScreen> {
                   backgroundColor: kGrey,
                   actions: [
                     CustomButton(
+                      text: 'Load',
+                      onPressed: () => controller.loadSketch(),
+                      width: 65.w,
+                      height: 28.h,
+                    ),
+                    SizedBox(
+                      width: 14.w,
+                    ),
+                    CustomButton(
                       text: 'Save',
-                      onPressed: () {},
+                      onPressed: () => controller.saveSketch(),
                       width: 65.w,
                       height: 28.h,
                     ),
@@ -67,7 +80,6 @@ class _EditingScreenState extends State<EditingScreen> {
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
-
               ),
               Expanded(
                 child: Stack(
@@ -89,52 +101,49 @@ class _EditingScreenState extends State<EditingScreen> {
                       left: 0,
                       child: ToolBar(),
                     ),
-                      Positioned(
-                        top: 24.h,
-                        right: 28.w,
-                        child: AnimatedContainer(
-                          width: !controller.showToolbar ? 31.w : 0,
-                          duration: Duration(milliseconds: 200),
-                          child: InkWell(
-                            splashColor: Colors.transparent,
-                            onTap: () {
-                              controller.showToolbar = true;
-                              controller.update();
-                            },
-                            child: Image.asset(
-                              'assets/icons/minimize.png',
-                              width: 31.w,
-                            ),
+                    Positioned(
+                      top: 24.h,
+                      right: 28.w,
+                      child: AnimatedContainer(
+                        width: !controller.showToolbar ? 31.w : 0,
+                        duration: Duration(milliseconds: 200),
+                        child: InkWell(
+                          splashColor: Colors.transparent,
+                          onTap: () {
+                            controller.showToolbar = true;
+                            controller.update();
+                          },
+                          child: Image.asset(
+                            'assets/icons/minimize.png',
+                            width: 31.w,
                           ),
                         ),
                       ),
+                    ),
                     Positioned(
                         bottom: 0,
                         child: AnimatedContainer(
                             duration: Duration(milliseconds: 200),
                             height: controller.showToolbar ? 40.h : 0,
-                          color: kGrey,
-                          width: Get.width,
-                          alignment: Alignment.center,
-                         // height: 40.h,
-                          child: Visibility(
-                            visible: controller.showToolbar ,
-                            child: Slider(
-                              value: sliderValue,
-                              min: 1,
-                              max: 50,
-                              onChanged: (double value) {
-                                setState(() {
-                                  sliderValue = value;
-                                });
-                                controller.drawingController.setStyle(
-                                  strokeWidth: value
-                                );
-                              },
-                
-                            ),
-                          )
-                        ))
+                            color: kGrey,
+                            width: Get.width,
+                            alignment: Alignment.center,
+                            // height: 40.h,
+                            child: Visibility(
+                              visible: controller.showToolbar,
+                              child: Slider(
+                                value: sliderValue,
+                                min: 1,
+                                max: 50,
+                                onChanged: (double value) {
+                                  setState(() {
+                                    sliderValue = value;
+                                  });
+                                  controller.drawingController
+                                      .setStyle(strokeWidth: value);
+                                },
+                              ),
+                            )))
                   ],
                 ),
               ),

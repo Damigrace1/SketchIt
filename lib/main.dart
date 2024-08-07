@@ -9,7 +9,6 @@ import 'package:sketch_it/screens/home_screen.dart';
 import 'package:sketch_it/screens/splash_screen.dart';
 import 'package:sketch_it/screens/username/username.dart';
 import 'package:sketch_it/utils/colors.dart';
-
 import 'controller.dart/auth_controller.dart';
 
 void main() async {
@@ -42,7 +41,7 @@ class SketchItApp extends StatelessWidget {
             theme: ThemeData(colorSchemeSeed: kPrimary),
             debugShowCheckedModeBanner: false,
             home:
-            const HomeScreen()
+            const SplashScreen()
             // Author: Dami
             // Note: You can change the entry point if your task needs user to sign up.....
           //  const Mainpage(),
