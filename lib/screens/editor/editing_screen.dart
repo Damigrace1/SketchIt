@@ -45,13 +45,6 @@ class _EditingScreenState extends State<EditingScreen> {
           toolbarHeight: 48.h,
           backgroundColor: kGrey,
           actions: [
-            Image.asset(
-              'assets/icons/person.png',
-              width: 20.w,
-            ),
-            SizedBox(
-              width: 18.w,
-            ),
             CustomButton(
               text: 'Save',
               onPressed: () {},

@@ -110,26 +110,11 @@ class _ToolBarState extends State<ToolBar> {
             ),
             InkWell(
               onTap:(){
-               showModalBottomSheet(context: context, builder: (context){
-                 return  SizedBox(
-                   height: 50.h,
-                   child: Slider(
-                     value: controller.strokeWidth,
-                     max: 50,
-                     min: 1,
-                     onChanged: (double v) {
-                       controller.updateStrokeWidth(v);
-                       setState(() {
+                controller.drawingController.setPaintContent(Eraser(color: controller.canvasColor));
 
-                       });
-                     }
-
-                   ),
-                 );
-               });
               },
               child: Image.asset(
-                'assets/toolbar/edit.png',
+                'assets/icons/eraser.png',
                 width: 33.w,
               ),
             ),

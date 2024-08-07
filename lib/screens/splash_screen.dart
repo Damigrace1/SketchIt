@@ -5,6 +5,8 @@ import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:sketch_it/screens/auth/sign_in.dart';
+import 'package:sketch_it/screens/auth/sign_up.dart';
 import 'package:sketch_it/screens/home_screen.dart';
 import 'package:sketch_it/screens/signup_screen.dart';
 import 'package:sketch_it/screens/widgets/custom_button.dart';
@@ -41,12 +43,12 @@ class SplashScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500),),
                 SizedBox(height: 21.h,),
                 CustomButton(text: 'Sign Up', onPressed: (){
-                  Get.to(()=>SignUpPage());
+                  Get.offAll(()=>Signup());
                 },
                   width: 167.w,),
                 SizedBox(height: 8.h,),
                 CustomButton(text: 'Login', onPressed: (){
-                  Get.offAll(()=>HomeScreen());
+                  Get.offAll(()=>SignIn());
                 },
                   fillColor: kGrey,
                   textColor: Colors.black,
@@ -59,5 +61,6 @@ class SplashScreen extends StatelessWidget {
 
 
     );
+
   }
 }
