@@ -51,9 +51,13 @@ class _EditingScreenState extends State<EditingScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<EditorController>(
       builder: (EditorController controller) {
+        print(controller.drawingController.getJsonList());
 
         return Scaffold(
-          appBar: AppBar(toolbarHeight: 0, backgroundColor: kGrey,),
+          appBar: AppBar(
+            toolbarHeight: 0,
+            backgroundColor: kGrey,
+          ),
           body: Column(
             children: [
               AnimatedContainer(
@@ -64,8 +68,17 @@ class _EditingScreenState extends State<EditingScreen> {
                   backgroundColor: kGrey,
                   actions: [
                     CustomButton(
+                      text: 'Load',
+                      onPressed: () => controller.loadSketch(),
+                      width: 65.w,
+                      height: 28.h,
+                    ),
+                    SizedBox(
+                      width: 14.w,
+                    ),
+                    CustomButton(
                       text: 'Save',
-                      onPressed: () {},
+                      onPressed: () => controller.saveSketch(),
                       width: 65.w,
                       height: 28.h,
                     ),
@@ -78,9 +91,9 @@ class _EditingScreenState extends State<EditingScreen> {
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
-
               ),
               Expanded(
+
                 child: StackBoard(
                   customBuilder: (StackItem<StackItemContent> item) {
                     if (item is StackTextItem) {
