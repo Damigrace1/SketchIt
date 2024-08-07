@@ -1,4 +1,5 @@
 // import 'package:flutter/cupertino.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -52,11 +53,17 @@ class _EditingScreenState extends State<EditingScreen> {
 
   double sliderValue = 5;
   bool showTextEditor = false;
+  StackTextItem? currentTextContent ;
   FocusScopeNode focusNode = FocusScopeNode();
+  Color textColor = Colors.white;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {;
     return GetBuilder<EditorController>(
       builder: (EditorController controller) {
+        controller.stackBoardController.updateItem(StackTextItem(
+          size: const Size(200, 100),
+          content: TextItemContent(data: 'New 2',style: TextStyle(color: Colors.red)),
+        ));
         // print(controller.drawingController.getJsonList());
         // FirebaseService().collaborate('dami', 'work1');
         return Scaffold(
@@ -67,23 +74,33 @@ class _EditingScreenState extends State<EditingScreen> {
           bottomSheet: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-
+              // AnimatedContainer(
+              //     duration: Duration(milliseconds: 200),
+              //     height: showTextEditor ? 40.h : 0,
+              //     color:kGrey,
+              //     width: Get.width,
+              //     alignment: Alignment.center,
+              //
+              //   padding: EdgeInsets.symmetric(horizontal: 12.w),
+              //   child: Visibility(
+              //     visible: showTextEditor ,
+              //     child: Row(children: [
+              //       Text('Fontsize',style: TextStyle(fontWeight: FontWeight.bold),),
+              //       SizedBox(width: 8.w,),
+              //       Text(currentTextContent?.content?.style?.fontSize?.toString()??'',
+              //         style: TextStyle(fontWeight: FontWeight.bold),),
+              //     ],),
+              //   ),
+              //     ),
               AnimatedContainer(
-                  duration: Duration(milliseconds: 200),
-                  height: showTextEditor ? 40.h : 0,
-                  color: Colors.red,
-                  width: Get.width,
-                  alignment: Alignment.center,
-                  ),
-              AnimatedContainer(
-                  duration: Duration(milliseconds: 200),
-                  height: controller.showToolbar ? 40.h : 0,
+                  duration: Duration(milliseconds: 300),
+                  height: controller.showToolbar && !showTextEditor ? 40.h : 0,
                   color: kGrey,
                   width: Get.width,
                   alignment: Alignment.center,
                   // height: 40.h,
                   child: Visibility(
-                    visible: controller.showToolbar,
+                    visible: controller.showToolbar && !showTextEditor ,
                     child: Slider(
                       value: sliderValue,
                       min: 1,
@@ -139,6 +156,7 @@ class _EditingScreenState extends State<EditingScreen> {
                   customBuilder: (StackItem<StackItemContent> item) {
 
                     if (item is StackTextItem) {
+                      currentTextContent = item;
                       if(item.status == StackItemStatus.selected){
                           showTextEditor = true;
                           Future.delayed(Duration.zero,(){
@@ -152,6 +170,7 @@ class _EditingScreenState extends State<EditingScreen> {
                           });
 
                       }
+
                       return StackTextCase(
                         item: item,
                       );
@@ -197,7 +216,7 @@ class _EditingScreenState extends State<EditingScreen> {
                       ),
                     ],
                   ),
-                  controller: controller.textController,
+                  controller: controller.stackBoardController,
                 ),
               ),
             ],

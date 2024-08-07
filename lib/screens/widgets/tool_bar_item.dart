@@ -25,7 +25,14 @@ class ToolbarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTapDown: onTapDown,
+      onTapDown: (v){
+        if(onTapDown != null){
+          onTapDown!(v);}
+        if(showHighlight){
+          controller.selectedToolId = id;
+          controller.update();
+        }
+        } ,
       onTap:(){
         if(showHighlight){
           controller.selectedToolId = id;

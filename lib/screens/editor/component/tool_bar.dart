@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
@@ -11,11 +12,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sketch_it/controllers/editor_controller.dart';
 import 'package:sketch_it/screens/widgets/custom_button.dart';
 import 'package:sketch_it/utils/colors.dart';
+import 'package:stack_board/flutter_stack_board.dart';
 import 'package:stack_board/stack_items.dart';
 
 import '../../../utils/common_functions.dart';
 import '../../widgets/tool_bar_item.dart';
 import '../editing_screen.dart';
+import 'add_text_widget.dart';
 
 class ToolBar extends StatefulWidget {
   const ToolBar({Key? key, }) : super(key: key);
@@ -23,7 +26,7 @@ class ToolBar extends StatefulWidget {
   @override
   State<ToolBar> createState() => _ToolBarState();
 }
-
+Color textColor = Colors.black;
 class _ToolBarState extends State<ToolBar> {
 
   @override
@@ -58,21 +61,86 @@ class _ToolBarState extends State<ToolBar> {
                 controller.update();
               }, id: 0,
             ),
-            ToolbarItem(
-              icon: 'assets/toolbar/layer.png',
-              iconWidth: 30.62.w,
-              onTap: (){
 
-              }, id: 1,
-            ),
+
             ToolbarItem(
               showHighlight: true,
               icon: 'assets/toolbar/dropper.png',
               iconWidth: 33.w,
               hasMoreChildren: true,
-              onTap: (){
-                controller.drawingController.setPaintContent(SmoothLine());
-              }, id: 2,
+              onTapDown: (TapDownDetails details) {
+                final tapPosition = details.globalPosition;
+                setState(() {
+                  position = 0.h;
+                });
+
+                showCustomMenu(context, tapPosition,
+                    [PopupMenuItem<int>(
+                      value: 3,
+                      child: Column(
+                        children: [
+                          CustomButton( onPressed: (){
+                            Navigator.pop(context);
+                            Get.dialog(
+                                AddTextWidget(
+                                  controller: controller.stackBoardController,
+                                )
+                            );
+                          },
+                            width: 44.w,height: 38.h,filled: false,
+                            child:
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/icons/T.png',width: 10.w,),
+                                Text('Text',style: TextStyle(fontSize: 6.sp,
+                                    fontWeight: FontWeight.w500,color: Colors.black),)
+                              ],
+                            ),),
+                          SizedBox(height: 10.w,),
+                          CustomButton(
+
+                            child:
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/icons/import.png',width: 14.w,),
+                                Text('Import Image',style: TextStyle(fontSize: 6.sp,
+                                    fontWeight: FontWeight.w500,color: Colors.black),)
+                              ],
+                            ),
+                            onPressed: ()async {
+
+                              final ImagePicker picker = ImagePicker();
+                              final XFile? image =
+                              await picker.pickImage(source: ImageSource.gallery);
+                              if (image == null) return;
+                              Get.find<EditorController>().updateImage(File(image.path));
+
+                            },
+                            width: 44.w,height: 38.h,filled: false,),
+                          SizedBox(height: 10.w,),
+                          CustomButton(
+                            child:
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/icons/flip.png',width: 18.w,),
+                                Text('Symmetry',style: TextStyle(fontSize: 6.sp,
+                                    fontWeight: FontWeight.w500,color: Colors.black),)
+                              ],
+                            ),
+                            onPressed: ()async {
+                              controller.drawingController.turn();
+                            },
+                            width: 44.w,height: 38.h,filled: false,),
+
+
+                        ],
+                      ),
+                    ),]);
+              },
+              id: 2,
             ),
             ToolbarItem(
               icon: 'assets/icons/eraser.png',
@@ -96,65 +164,63 @@ class _ToolBarState extends State<ToolBar> {
                       value: 3,
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              CustomButton( onPressed: (){
-                                Navigator.pop(context);
-                                controller.textController.addItem(
-                                  StackTextItem(
-                                    size: const Size(200, 100),
-                                    content: TextItemContent(data: 'New Text',style: TextStyle(color: Colors.black)),
-                                  )
-                                );                              },
-                                width: 44.w,height: 38.h,filled: false,child:
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset('assets/icons/T.png',width: 10.w,),
-                                    Text('Text',style: TextStyle(fontSize: 6.sp,
-                                        fontWeight: FontWeight.w500,color: Colors.black),)
-                                  ],
-                                ),),
-                              SizedBox(width: 10.w,),
-                              CustomButton(
+                          CustomButton( onPressed: (){
+                            Navigator.pop(context);
+                            Get.dialog(
+                              AddTextWidget(
+                                controller: controller.stackBoardController,
+                              )
+                            );
+                            },
+                            width: 44.w,height: 38.h,filled: false,
+                            child:
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/icons/T.png',width: 10.w,),
+                                Text('Text',style: TextStyle(fontSize: 6.sp,
+                                    fontWeight: FontWeight.w500,color: Colors.black),)
+                              ],
+                            ),),
+                          SizedBox(height: 10.w,),
+                          CustomButton(
 
-                                child:
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset('assets/icons/import.png',width: 14.w,),
-                                    Text('Import Image',style: TextStyle(fontSize: 6.sp,
-                                        fontWeight: FontWeight.w500,color: Colors.black),)
-                                  ],
-                                ),
-                                onPressed: ()async {
+                            child:
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/icons/import.png',width: 14.w,),
+                                Text('Import Image',style: TextStyle(fontSize: 6.sp,
+                                    fontWeight: FontWeight.w500,color: Colors.black),)
+                              ],
+                            ),
+                            onPressed: ()async {
 
-                                  final ImagePicker picker = ImagePicker();
-                                  final XFile? image =
-                                  await picker.pickImage(source: ImageSource.gallery);
-                                  if (image == null) return;
-                                  Get.find<EditorController>().updateImage(File(image.path));
+                              final ImagePicker picker = ImagePicker();
+                              final XFile? image =
+                              await picker.pickImage(source: ImageSource.gallery);
+                              if (image == null) return;
+                              Get.find<EditorController>().updateImage(File(image.path));
 
-                                },
-                                width: 44.w,height: 38.h,filled: false,),
-                              SizedBox(width: 10.w,),
-                              CustomButton(text: 'text', onPressed: (){},
-                                width: 44.w,height: 38.h,filled: false,),
-                            ],
-                          ),
-                          SizedBox(height: 10.h,),
-                          Row(
-                            children: [
-                              CustomButton(text: 'text', onPressed: (){},
-                                width: 44.w,height: 38.h,filled: false,),
-                              SizedBox(width: 10.w,),
-                              CustomButton(text: 'text', onPressed: (){},
-                                width: 44.w,height: 38.h,filled: false,),
-                              SizedBox(width: 10.w,),
-                              CustomButton(text: 'text', onPressed: (){},
-                                width: 44.w,height: 38.h,filled: false,),
-                            ],
-                          ),
+                            },
+                            width: 44.w,height: 38.h,filled: false,),
+                          SizedBox(height: 10.w,),
+                          CustomButton(
+                            child:
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/icons/flip.png',width: 18.w,),
+                                Text('Symmetry',style: TextStyle(fontSize: 6.sp,
+                                    fontWeight: FontWeight.w500,color: Colors.black),)
+                              ],
+                            ),
+                            onPressed: ()async {
+                              controller.drawingController.turn();
+                            },
+                            width: 44.w,height: 38.h,filled: false,),
+
+
                         ],
                       ),
                     ),]);
@@ -183,4 +249,5 @@ class _ToolBarState extends State<ToolBar> {
     },);
   }
 }
+
 
