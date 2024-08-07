@@ -41,7 +41,11 @@ class SketchItApp extends StatelessWidget {
             title: 'Sketch  It',
             theme: ThemeData(colorSchemeSeed: kPrimary),
             debugShowCheckedModeBanner: false,
-            home: const Mainpage(),
+            home:
+            const HomeScreen()
+            // Author: Dami
+            // Note: You can change the entry point if your task needs user to sign up.....
+          //  const Mainpage(),
           );
         });
   }

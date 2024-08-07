@@ -10,8 +10,11 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sketch_it/controllers/editor_controller.dart';
 import 'package:sketch_it/screens/widgets/custom_button.dart';
+import 'package:sketch_it/utils/colors.dart';
+import 'package:stack_board/stack_items.dart';
 
 import '../../../utils/common_functions.dart';
+import '../../widgets/tool_bar_item.dart';
 import '../editing_screen.dart';
 
 class ToolBar extends StatefulWidget {
@@ -32,8 +35,11 @@ class _ToolBarState extends State<ToolBar> {
   Widget build(BuildContext context) {
 
     return GetBuilder<EditorController>(builder: (EditorController controller) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 19.h),
+      controller.drawingController.getJsonList();
+      return AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        padding: EdgeInsets.symmetric( vertical: 19.h),
+        width: controller.showToolbar ? 60.w : 0,
         decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -44,84 +50,41 @@ class _ToolBarState extends State<ToolBar> {
         child:
         Column(
           children: [
-            InkWell(
-              onTapDown: (TapDownDetails details) {
-                final tapPosition = details.globalPosition;
-                setState(() {
-                  position = 0;
-                });
-                showCustomMenu(context, tapPosition,
-                    [PopupMenuItem<int>(
-                      value: 0,
-                      child: Text('Delete'),
-                    ),]);
-              },
-              child: Image.asset(
-                'assets/toolbar/maximize.png',
-                width: 32.81.w,
-              ),
+            ToolbarItem(
+              icon: 'assets/toolbar/maximize.png',
+              iconWidth: 32.81.w,
+              onTap: (){
+                controller.showToolbar = false;
+                controller.update();
+              }, id: 0,
             ),
-            SizedBox(
-              height: 32.69.h,
+            ToolbarItem(
+              icon: 'assets/toolbar/layer.png',
+              iconWidth: 30.62.w,
+              onTap: (){
+
+              }, id: 1,
             ),
-            InkWell(
-              onTapDown: (TapDownDetails details) {
-                final tapPosition = details.globalPosition;
-                setState(() {
-                  position = 62.h;
-                });
-                showCustomMenu(context, tapPosition,
-                    [PopupMenuItem<int>(
-                      value: 1,
-                      child: Text('Delete'),
-                    ),]);
-              },
-              child: Stack(
-                children: [
-                  Image.asset(
-                    'assets/toolbar/layer.png',
-                    width: 30.62.w,
-                  ),
-                ],
-              ),
+            ToolbarItem(
+              showHighlight: true,
+              icon: 'assets/toolbar/dropper.png',
+              iconWidth: 33.w,
+              hasMoreChildren: true,
+              onTap: (){
+                controller.drawingController.setPaintContent(SmoothLine());
+              }, id: 2,
             ),
-            SizedBox(
-              height: 32.69.h,
-            ),
-            InkWell(
-              onTapDown: (TapDownDetails details) {
-                final tapPosition = details.globalPosition;
-                setState(() {
-                  position = 125.h;
-                });
-                showCustomMenu(context, tapPosition,
-                    [PopupMenuItem<int>(
-                      value: 2,
-                      child: Text('Delete'),
-                    ),]);
-              },
-              child: Image.asset(
-                'assets/toolbar/dropper.png',
-                width: 33.w,
-              ),
-            ),
-            SizedBox(
-              height: 32.69.h,
-            ),
-            InkWell(
-              onTap:(){
+            ToolbarItem(
+              icon: 'assets/icons/eraser.png',
+              showHighlight: true,
+              onTap: (){
                 controller.drawingController.setPaintContent(Eraser(color: controller.canvasColor));
 
-              },
-              child: Image.asset(
-                'assets/icons/eraser.png',
-                width: 33.w,
-              ),
+              }, id: 3,
             ),
-            SizedBox(
-              height: 32.69.h,
-            ),
-            InkWell(
+            ToolbarItem(
+              hasMoreChildren: true,
+              icon: 'assets/toolbar/more.png',
               onTapDown: (TapDownDetails details) {
                 final tapPosition = details.globalPosition;
                 setState(() {
@@ -135,7 +98,14 @@ class _ToolBarState extends State<ToolBar> {
                         children: [
                           Row(
                             children: [
-                              CustomButton( onPressed: (){},
+                              CustomButton( onPressed: (){
+                                Navigator.pop(context);
+                                controller.textController.addItem(
+                                  StackTextItem(
+                                    size: const Size(200, 100),
+                                    content: TextItemContent(data: 'New Text',style: TextStyle(color: Colors.black)),
+                                  )
+                                );                              },
                                 width: 44.w,height: 38.h,filled: false,child:
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -189,34 +159,22 @@ class _ToolBarState extends State<ToolBar> {
                       ),
                     ),]);
               },
-              child: Image.asset(
-                'assets/toolbar/more.png',
-                width: 27.w,
-              ),
+              id: 4,
+              iconWidth: 27.w,
             ),
-            SizedBox(
-              height: 32.69.h,
-            ),
-            InkWell(
+            ToolbarItem(
+              icon: 'assets/toolbar/redo.png',
+              iconWidth: 25.w,
               onTap: (){
                 controller.drawingController.redo();
-              },
-              child: Image.asset(
-                'assets/toolbar/redo.png',
-                width: 25.w,
-              ),
+              }, id: 5,
             ),
-            SizedBox(
-              height: 32.69.h,
-            ),
-            InkWell(
+            ToolbarItem(
+              icon: 'assets/toolbar/undo.png',
+              iconWidth: 25.w,
               onTap: (){
                 controller.drawingController.undo();
-              },
-              child: Image.asset(
-                'assets/toolbar/undo.png',
-                width: 25.w,
-              ),
+              }, id: 6,
             ),
 
           ],
@@ -225,3 +183,4 @@ class _ToolBarState extends State<ToolBar> {
     },);
   }
 }
+
