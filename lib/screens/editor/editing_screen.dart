@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
-import 'package:flutter_drawing_board/paint_contents.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -9,6 +10,10 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:sketch_it/controllers/editor_controller.dart';
 import 'package:sketch_it/screens/widgets/custom_button.dart';
+import 'package:stack_board/flutter_stack_board.dart';
+import 'package:stack_board/stack_board_item.dart';
+import 'package:stack_board/stack_items.dart';
+// import 'package:stack_board/stack_board.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/common_functions.dart';
@@ -62,6 +67,7 @@ class _EditingScreenState extends State<EditingScreen> {
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
+
               ),
               Expanded(
                 child: Stack(

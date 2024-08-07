@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sketch_it/screens/editor/editing_screen.dart';
 import 'package:sketch_it/screens/widgets/custom_button.dart';
 import 'package:sketch_it/utils/colors.dart';
 
@@ -42,7 +43,7 @@ class SignUpPage extends StatelessWidget {
               ),
               const Text(
                 'Create an account to \nstart creating',
-                style: TextStyle(color: Colors.black54),
+                style: TextStyle(color: kGrey),
               ),
               const SizedBox(height: 16),
               TextField(
@@ -51,7 +52,7 @@ class SignUpPage extends StatelessWidget {
                   labelText: 'Email Address',
                   prefixIcon: Icon(
                     Icons.email,
-                    color: Colors.black,
+                    color: kPrimary,
                   ),
                   border: OutlineInputBorder(),
                 ),
@@ -61,7 +62,7 @@ class SignUpPage extends StatelessWidget {
                 controller: controller.usernameController,
                 decoration: const InputDecoration(
                   labelText: 'Username',
-                  prefixIcon: Icon(Icons.person, color: Colors.black),
+                  prefixIcon: Icon(Icons.person, color: kPrimary),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -71,7 +72,7 @@ class SignUpPage extends StatelessWidget {
                 obscureText: true,
                 decoration: const InputDecoration(
                   labelText: 'Password',
-                  prefixIcon: Icon(Icons.lock, color: Colors.black),
+                  prefixIcon: Icon(Icons.lock, color: kPrimary),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -81,7 +82,7 @@ class SignUpPage extends StatelessWidget {
                 obscureText: true,
                 decoration: const InputDecoration(
                   labelText: 'Repeat Password',
-                  prefixIcon: Icon(Icons.lock, color: Colors.black),
+                  prefixIcon: Icon(Icons.lock, color: kPrimary),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -90,7 +91,7 @@ class SignUpPage extends StatelessWidget {
                     activeColor: kPrimary,
                     title: const Text(
                       'I agree to the terms and conditions',
-                      style: TextStyle(color: Colors.black26),
+                      style: TextStyle(color: kGrey),
                     ),
                     value: controller.termsAccepted.value,
                     onChanged: controller.toggleTerms,
@@ -99,7 +100,7 @@ class SignUpPage extends StatelessWidget {
               const SizedBox(height: 8),
               Center(
                 child: CustomButton(
-                  width: 200,
+                  width: 200.w,
                   text: 'Submit',
                   onPressed: () {},
                 ),
@@ -110,7 +111,7 @@ class SignUpPage extends StatelessWidget {
                   Expanded(
                       child: Divider(
                     thickness: 1.0,
-                    color: Colors.black38,
+                    color: kGrey,
                     indent: 70,
                     // endIndent: 70,
                   )),
@@ -118,13 +119,13 @@ class SignUpPage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
                       'OR',
-                      style: TextStyle(color: Colors.black38),
+                      style: TextStyle(color: kGrey),
                     ),
                   ),
                   Expanded(
                       child: Divider(
                     thickness: 1.0,
-                    color: Colors.black38,
+                    color: kGrey,
                     endIndent: 70,
                   )),
                 ],
@@ -134,9 +135,11 @@ class SignUpPage extends StatelessWidget {
                 child: CustomButton(
                   fillColor: kGrey1,
                   textColor: kPrimary,
-                  width: 200,
+                  width: 200.w,
                   text: 'Google',
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.offAll(EditingScreen());
+                  },
                 ),
               )
             ],
