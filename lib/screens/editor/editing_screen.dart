@@ -1,4 +1,5 @@
 // import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
@@ -10,6 +11,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:sketch_it/controllers/editor_controller.dart';
 import 'package:sketch_it/screens/widgets/custom_button.dart';
+import 'package:sketch_it/service/firebase.dart';
 import 'package:stack_board/flutter_stack_board.dart';
 import 'package:stack_board/stack_board_item.dart';
 import 'package:stack_board/stack_items.dart';
@@ -43,20 +45,59 @@ class _EditingScreenState extends State<EditingScreen> {
     // TODO: implement initState
     Get.put(EditorController());
     super.initState();
+    focusNode.addListener(() {
+      print(focusNode.hasFocus);
+    });
   }
 
   double sliderValue = 5;
-
+  bool showTextEditor = false;
+  FocusScopeNode focusNode = FocusScopeNode();
   @override
   Widget build(BuildContext context) {
     return GetBuilder<EditorController>(
       builder: (EditorController controller) {
-        print(controller.drawingController.getJsonList());
-
+        // print(controller.drawingController.getJsonList());
+        // FirebaseService().collaborate('dami', 'work1');
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: 0,
             backgroundColor: kGrey,
+          ),
+          bottomSheet: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+
+              AnimatedContainer(
+                  duration: Duration(milliseconds: 200),
+                  height: showTextEditor ? 40.h : 0,
+                  color: Colors.red,
+                  width: Get.width,
+                  alignment: Alignment.center,
+                  ),
+              AnimatedContainer(
+                  duration: Duration(milliseconds: 200),
+                  height: controller.showToolbar ? 40.h : 0,
+                  color: kGrey,
+                  width: Get.width,
+                  alignment: Alignment.center,
+                  // height: 40.h,
+                  child: Visibility(
+                    visible: controller.showToolbar,
+                    child: Slider(
+                      value: sliderValue,
+                      min: 1,
+                      max: 50,
+                      onChanged: (double value) {
+                        setState(() {
+                          sliderValue = value;
+                        });
+                        controller.drawingController
+                            .setStyle(strokeWidth: value);
+                      },
+                    ),
+                  )),
+            ],
           ),
           body: Column(
             children: [
@@ -93,12 +134,26 @@ class _EditingScreenState extends State<EditingScreen> {
                 ),
               ),
               Expanded(
-
                 child: StackBoard(
-                  customBuilder: (StackItem<StackItemContent> item) {
-                    if (item is StackTextItem) {
-                      return StackTextCase(item: item,
 
+                  customBuilder: (StackItem<StackItemContent> item) {
+
+                    if (item is StackTextItem) {
+                      if(item.status == StackItemStatus.selected){
+                          showTextEditor = true;
+                          Future.delayed(Duration.zero,(){
+                            controller.update();
+                          });
+                      }
+                      if(item.status == StackItemStatus.idle){
+                          showTextEditor = false;
+                          Future.delayed(Duration.zero,(){
+                            controller.update();
+                          });
+
+                      }
+                      return StackTextCase(
+                        item: item,
                       );
                     }
 
@@ -111,12 +166,10 @@ class _EditingScreenState extends State<EditingScreen> {
                         background: controller.imageToBeEdited != null
                             ? Image.file(controller.imageToBeEdited!)
                             : Container(
-                          width: Get.width,
-                          height: Get.height,
-                          color: controller.canvasColor,
-                        ),
-                        // showDefaultActions: true,
-                        // showDefaultTools: true,
+                                width: Get.width,
+                                height: Get.height,
+                                color: controller.canvasColor,
+                              ),
                       ),
                       Positioned(
                         top: 68.h,
@@ -142,128 +195,11 @@ class _EditingScreenState extends State<EditingScreen> {
                           ),
                         ),
                       ),
-                      Positioned(
-                          bottom: 0,
-                          child: AnimatedContainer(
-                              duration: Duration(milliseconds: 200),
-                              height: controller.showToolbar ? 40.h : 0,
-                              color: kGrey,
-                              width: Get.width,
-                              alignment: Alignment.center,
-                              // height: 40.h,
-                              child: Visibility(
-                                visible: controller.showToolbar ,
-                                child: Slider(
-                                  value: sliderValue,
-                                  min: 1,
-                                  max: 50,
-                                  onChanged: (double value) {
-                                    setState(() {
-                                      sliderValue = value;
-                                    });
-                                    controller.drawingController.setStyle(
-                                        strokeWidth: value
-                                    );
-                                  },
-
-                                ),
-                              )
-                          )),
-                      // Positioned(
-                      //   left: 60.w,
-                      //   child: Container(
-                      //     width: Get.width - 60.w,
-                      //     height: Get.height,
-                      //     child: StackBoard(
-                      //       controller: cont,
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                   controller: controller.textController,
                 ),
               ),
-              // Expanded(
-              //   child: Stack(
-              //     children: [
-              //
-              //       DrawingBoard(
-              //         controller: controller.drawingController,
-              //         background: controller.imageToBeEdited != null
-              //             ? Image.file(controller.imageToBeEdited!)
-              //             : Container(
-              //                 width: Get.width,
-              //                 height: Get.height,
-              //                 color: controller.canvasColor,
-              //               ),
-              //         // showDefaultActions: true,
-              //         // showDefaultTools: true,
-              //       ),
-              //       Positioned(
-              //         top: 68.h,
-              //         left: 0,
-              //         child: ToolBar(),
-              //       ),
-              //         Positioned(
-              //           top: 24.h,
-              //           right: 28.w,
-              //           child: AnimatedContainer(
-              //             width: !controller.showToolbar ? 31.w : 0,
-              //             duration: Duration(milliseconds: 200),
-              //             child: InkWell(
-              //               splashColor: Colors.transparent,
-              //               onTap: () {
-              //                 controller.showToolbar = true;
-              //                 controller.update();
-              //               },
-              //               child: Image.asset(
-              //                 'assets/icons/minimize.png',
-              //                 width: 31.w,
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       Positioned(
-              //           bottom: 0,
-              //           child: AnimatedContainer(
-              //               duration: Duration(milliseconds: 200),
-              //               height: controller.showToolbar ? 40.h : 0,
-              //             color: kGrey,
-              //             width: Get.width,
-              //             alignment: Alignment.center,
-              //            // height: 40.h,
-              //             child: Visibility(
-              //               visible: controller.showToolbar ,
-              //               child: Slider(
-              //                 value: sliderValue,
-              //                 min: 1,
-              //                 max: 50,
-              //                 onChanged: (double value) {
-              //                   setState(() {
-              //                     sliderValue = value;
-              //                   });
-              //                   controller.drawingController.setStyle(
-              //                     strokeWidth: value
-              //                   );
-              //                 },
-              //
-              //               ),
-              //             )
-              //           )),
-              //       // Positioned(
-              //       //   left: 60.w,
-              //       //   child: Container(
-              //       //     width: Get.width - 60.w,
-              //       //     height: Get.height,
-              //       //     child: StackBoard(
-              //       //       controller: cont,
-              //       //     ),
-              //       //   ),
-              //       // ),
-              //     ],
-              //   ),
-              // ),
             ],
           ),
         );

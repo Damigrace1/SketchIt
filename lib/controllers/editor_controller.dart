@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 // import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:get/get.dart';
+import 'package:sketch_it/service/firebase.dart';
 import 'package:stack_board/flutter_stack_board.dart';
 
 
@@ -53,30 +54,23 @@ class EditorController extends GetxController {
   }
 
   Future<void> saveSketch() async {
-    final CollectionReference _users =
-        FirebaseFirestore.instance.collection('users');
-    try {
-      final User? currentUser = _signupController.user;
-      if (currentUser == null) {
-        Get.snackbar('Error', 'Please login to save sketches');
-        return;
-      }
-      final userId = currentUser.uid;
-      final sketchData = drawingController.getJsonList();
 
+    try {
+      final sketchData = drawingController.getJsonList();
+      FirebaseService().saveSketchData('dami', sketchData, 'work1');
       // await _users.doc(userId).set({
       //   // 'saved sketches': sketchData.toString(),
       // });
-      await _users.doc(userId).set({
-        'sketches': FieldValue.arrayUnion([
-          {
-            'timestamp': DateTime.now().toIso8601String(),
-            'data': sketchData.toString(),
-          }
-        ])
-      }, SetOptions(merge: true));
-
-      Get.snackbar('Success', 'Sketch saved successfully');
+      // await _users.doc('dami').set({
+      //   'sketches': FieldValue.arrayUnion([
+      //     {
+      //       'timestamp': DateTime.now().toIso8601String(),
+      //       'data': sketchData.toString(),
+      //     }
+      //   ])
+      // }, SetOptions(merge: true));
+      //
+      // Get.snackbar('Success', 'Sketch saved successfully');
     } catch (e) {
       print('$e');
       Get.snackbar('Error', 'Failed to save sketch: $e');
