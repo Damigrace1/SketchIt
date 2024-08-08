@@ -12,9 +12,11 @@ class CustomButton extends StatelessWidget {
         this.fillColor,
         this.width,
         this.height,
+        this.loading =  false,
         this.enabled = true, this.textColor, this.child}) : assert (child != null ||
   text != null);
   final bool filled;
+   bool loading;
   final String? text;
   final Function() onPressed;
   final Color? fillColor;
@@ -44,7 +46,16 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(4.r),
           ),
         ),
-        child: child?? Text(
+        child:
+        loading ? Container(
+          height: 15.h,
+          width: 15.h,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: kGrey1,
+          ),
+        ) :
+        child?? Text(
           text!,
           style: TextStyle(color: textColor?.withOpacity(enabled ? 1 : 0.5) ??
           Colors.white.withOpacity(enabled ? 1 : 0.5)),

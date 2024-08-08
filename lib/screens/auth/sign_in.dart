@@ -33,39 +33,33 @@ class SignIn extends StatelessWidget {
                           child: Obx(() => Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Icon(
-                                        Icons.arrow_back,
-                                        color: kblack,
-                                        size: 26,
-                                      ),
+                                    addVerticalSpacing(20),
+                                    Image.asset(
+                                      'assets/images/logo app.png',
+                                      width: 120,
+                                      height: 30,
                                     ),
-                                    addVerticalSpacing(25),
-                                    const Center(
-                                      child: Text(
-                                        'Sign In',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: 'Inter'),
-                                      ),
-                                    ),
-                                    addVerticalSpacing(40),
+                                    addVerticalSpacing(29),
                                     const Text(
-                                      'Email Address',
+                                      'Sign In',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w400,
                                           fontFamily: 'Inter'),
                                     ),
-                                    addVerticalSpacing(4),
+                                    addVerticalSpacing(7),
+                                    const Text(
+                                      'Agba Sketcher, Welcome Back !',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w300,
+                                          fontFamily: 'Inter'),
+                                    ),
+                                    addVerticalSpacing(29),
+
                                     SizedBox(
-                                      height: 48,
+                                      height: 60,
                                       child: TextFormField(
                                         cursorHeight: 20,
                                         style: const TextStyle(
@@ -77,11 +71,15 @@ class SignIn extends StatelessWidget {
                                             controller.signemailController,
                                         validator: controller.emailValidator,
                                         decoration: InputDecoration(
+                                            prefixIcon: const Icon(
+                                              Icons.mail,
+                                              color: kblack,
+                                            ),
                                             hintText: 'Enter email',
                                             hintStyle: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                color: kgrey5,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: kblack,
                                                 fontFamily: 'Inter'),
                                             border: OutlineInputBorder(
                                               borderSide: const BorderSide(
@@ -92,17 +90,9 @@ class SignIn extends StatelessWidget {
                                       ),
                                     ),
                                     addVerticalSpacing(16),
-                                    const Text(
-                                      'Password',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: 'Inter'),
-                                    ),
-                                    addVerticalSpacing(4),
+
                                     SizedBox(
-                                      height: 48,
+                                      height: 60,
                                       child: TextFormField(
                                         obscureText:
                                             controller.passwordVisible.value,
@@ -112,6 +102,10 @@ class SignIn extends StatelessWidget {
                                             TextInputType.visiblePassword,
                                         validator: controller.passwordValidator,
                                         decoration: InputDecoration(
+                                            prefixIcon: const Icon(
+                                              Icons.lock,
+                                              color: kblack,
+                                            ),
                                             suffixIcon: GestureDetector(
                                               onTap: () {
                                                 controller
@@ -132,8 +126,6 @@ class SignIn extends StatelessWidget {
                                                       ),
                                               ),
                                             ),
-                                            contentPadding:
-                                                const EdgeInsets.all(10),
                                             suffixIconConstraints:
                                                 const BoxConstraints(
                                                     maxHeight: 24,
@@ -143,9 +135,9 @@ class SignIn extends StatelessWidget {
                                             focusColor: kblack,
                                             hintText: 'Enter password',
                                             hintStyle: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                color: kgrey5,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: kblack,
                                                 fontFamily: 'Inter'),
                                             border: OutlineInputBorder(
                                               borderSide: const BorderSide(
@@ -161,13 +153,12 @@ class SignIn extends StatelessWidget {
                                         try {
                                           if (_formKey.currentState!
                                               .validate()) {
-                                           final res =  await controller.signIn(
+                                            final res = await controller.signIn(
                                               controller
                                                   .signemailController.text,
                                               controller
                                                   .signpasswordController.text,
                                             );
-                                            print('ressssssssss:$res');
                                             Get.offAll(
                                                 () => const HomeScreen());
                                           }
@@ -179,74 +170,45 @@ class SignIn extends StatelessWidget {
                                               false;
                                         }
                                       },
-                                      child: Container(
-                                          height: 56,
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                              color: kblack,
-                                              borderRadius:
-                                                  BorderRadius.circular(16)),
-                                          child: Center(
-                                              child: controller.isloadingemail
-                                                          .value ==
-                                                      false
-                                                  ? const Text(
-                                                      'Sign In',
-                                                      style: TextStyle(
-                                                          color: kwhite,
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontSize: 16),
-                                                    )
-                                                  : const CircularProgressIndicator(
-                                                      color: kwhite,
-                                                    ))),
-                                    ),
-                                    addVerticalSpacing(12),
-                                    const Center(
-                                      child: Text(
-                                        'or',
-                                        style: TextStyle(
-                                            color: kblack,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 16),
+
+                                      child: Center(
+                                        child: Container(
+                                            height: 56,
+                                            width: 179,
+                                            decoration: BoxDecoration(
+                                                color: kblack,
+                                                borderRadius:
+                                                    BorderRadius.circular(16)),
+                                            child: Center(
+                                                child: controller.isloadingemail
+                                                            .value ==
+                                                        false
+                                                    ? const Text(
+                                                        'Sign In',
+                                                        style: TextStyle(
+                                                            color: kwhite,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontSize: 16),
+                                                      )
+                                                    : const CircularProgressIndicator(
+                                                        color: kwhite,
+                                                      ))),
                                       ),
                                     ),
-                                    addVerticalSpacing(12),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        try {
-                                          await controller.googleLogin();
-                                          Get.offAll(() => const HomeScreen());
-                                        } on FirebaseAuthException catch (e) {
-                                          var message = e.message;
-                                          _showalertdialog(
-                                              message.toString(), context);
-                                        }
-                                      },
-                                      child: Container(
-                                        height: 56,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            color: Colors.transparent,
-                                            border: Border.all(color: kgrey4),
-                                            borderRadius:
-                                                BorderRadius.circular(16)),
-                                        child: Center(
-                                            child: controller.isloadinggoogle
-                                                        .value ==
-                                                    false
-                                                ? Image.asset(
-                                                    'assets/images/google.png',
-                                                    height: 22,
-                                                  )
-                                                : const CircularProgressIndicator(
-                                                    color: kgrey4,
-                                                  )),
-                                      ),
-                                    ),
+                                    // addVerticalSpacing(12),
+                                    // const Center(
+                                    //   child: Text(
+                                    //     'or',
+                                    //     style: TextStyle(
+                                    //         color: kblack,
+                                    //         fontFamily: 'Inter',
+                                    //         fontWeight: FontWeight.w700,
+                                    //         fontSize: 16),
+                                    //   ),
+                                    // ),
+                                    // addVerticalSpacing(12),
                                   ])))),
                   Center(
                       child: RichText(
@@ -255,7 +217,7 @@ class SignIn extends StatelessWidget {
                         style: const TextStyle(
                             color: kgrey5,
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w300,
                             fontFamily: 'Inter'),
                         children: <TextSpan>[
                           TextSpan(
@@ -263,7 +225,7 @@ class SignIn extends StatelessWidget {
                               style: const TextStyle(
                                   color: kblack,
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w600,
                                   fontFamily: 'Inter'),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {

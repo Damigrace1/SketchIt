@@ -4,26 +4,54 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-class UserController extends GetxController {
+class ProfileController extends GetxController {
   RxBool isloadingdoc = false.obs;
-  RxString? name;
+  RxString? name = ''.obs;
+  RxString? email = ''.obs;
+  RxString? uId = ''.obs;
+
 
   final _usernamecontroller = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
 
   TextEditingController get usernamecontroller => _usernamecontroller;
 
-  final CollectionReference _username =
-      FirebaseFirestore.instance.collection('username');
+  final CollectionReference _users =
+      FirebaseFirestore.instance.collection('users');
 
-  createdoc(
-    username,
-  ) {
-    isloadingdoc.value = true;
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    fetchdetails();
+    super.onInit();
 
-    _username.doc(auth.currentUser!.uid).set({
-      'username': username,
-    });
-    isloadingdoc.value = false;
+  }
+
+  Future fetchdetails() async {
+    final user = auth.currentUser;
+    email?.value = user!.email.toString();
+    uId?.value = user!.uid.toString();
+
+    final docSnapshot = await _users.doc(user?.uid).get();
+
+    Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
+
+    name?.value = data!['username'];
+
+    return data;
   }
 }
+//   final CollectionReference _users =
+//       FirebaseFirestore.instance.collection('users');
+
+//   createdoc(
+//     username,
+//   ) {
+//     isloadingdoc.value = true;
+
+//     _users.doc(auth.currentUser!.uid).set({
+//       'username': username,
+//     });
+//     isloadingdoc.value = false;
+//   }
+// }

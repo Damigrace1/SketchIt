@@ -1,10 +1,10 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sketch_it/controller.dart/auth_controller.dart';
+import 'package:sketch_it/controller.dart/user_controller.dart';
 import 'package:sketch_it/screens/splash_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -15,8 +15,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  User? user = Get.find<SignupController>().user;
+  // User? user = Get.find<SignupController>().user;
   bool _switchValue = false;
+
+  final ProfileController profileController = Get.put(ProfileController());
+  final SignupController authController = Get.put(SignupController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,44 +36,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      radius: 60.h,
-                      child: Icon(
-                        Icons.person,
-                        size: 80.h,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Text(
-                      '@${user?.displayName??''}',
-                      style: TextStyle(fontSize: 12.h),
-                    ),
-                    Text(
-                      user?.email??'',
-                      style: TextStyle(fontSize: 12.h),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(10.h)),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 40.h, vertical: 14.h),
-                        child: const Text(
-                          'Edit Profile',
-                          style: TextStyle(color: Colors.white),
+                child: Obx(
+                  () => Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        radius: 60.h,
+                        child: Icon(
+                          Icons.person,
+                          size: 80.h,
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Text(
+                        '@${profileController.name!.value ?? ''}',
+                        style: TextStyle(fontSize: 14.h),
+                      ),
+                      Text(
+                        profileController.email!.value ?? '',
+                        style: TextStyle(fontSize: 12.h),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(10.h)),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 40.h, vertical: 14.h),
+                          child: const Text(
+                            'Edit Profile',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -159,15 +164,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        (context),
-                        MaterialPageRoute(
-                            builder: (context) => SplashScreen()));
+                    authController.logout();
+                    Get.offAll(() => const SplashScreen());
                   },
                   child: Text(
                     'Logout',
                     style:
-                    TextStyle(fontWeight: FontWeight.w600, fontSize: 20.h),
+                        TextStyle(fontWeight: FontWeight.w600, fontSize: 20.h),
                   )),
             ],
           ),
