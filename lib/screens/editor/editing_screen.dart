@@ -33,7 +33,7 @@ import 'package:stack_board/stack_items.dart';
 
 class EditingScreen extends StatefulWidget {
   const EditingScreen({Key? key, required this.projName}) : super(key: key);
-final String projName;
+  final String projName;
   @override
   State<EditingScreen> createState() => _EditingScreenState();
 }
@@ -53,14 +53,13 @@ class _EditingScreenState extends State<EditingScreen> {
 
   double sliderValue = 5;
   bool showTextEditor = false;
-  StackTextItem? currentTextContent ;
+  StackTextItem? currentTextContent;
   FocusScopeNode focusNode = FocusScopeNode();
   Color textColor = Colors.white;
   @override
-  Widget build(BuildContext context) {;
+  Widget build(BuildContext context) {
     return GetBuilder<EditorController>(
       builder: (EditorController controller) {
-
         // print(controller.drawingController.getJsonList());
         // FirebaseService().collaborate('dami', 'work1');
         return Scaffold(
@@ -97,7 +96,7 @@ class _EditingScreenState extends State<EditingScreen> {
                   alignment: Alignment.center,
                   // height: 40.h,
                   child: Visibility(
-                    visible: controller.showToolbar && !showTextEditor ,
+                    visible: controller.showToolbar && !showTextEditor,
                     child: Slider(
                       value: sliderValue,
                       min: 1,
@@ -124,7 +123,10 @@ class _EditingScreenState extends State<EditingScreen> {
                   actions: [
                     InkWell(
                       splashColor: Colors.transparent,
-                      child: Image.asset('assets/icons/export.png',width: 21.w,),
+                      child: Image.asset(
+                        'assets/icons/export.png',
+                        width: 21.w,
+                      ),
                     ),
                     SizedBox(
                       width: 14.w,
@@ -135,11 +137,8 @@ class _EditingScreenState extends State<EditingScreen> {
                       width: 65.w,
                       height: 28.h,
                     ),
-
                     PopupMenuButton<String>(
-                      onSelected: (String value) {
-
-                      },
+                      onSelected: (String value) {},
                       itemBuilder: (BuildContext context) {
                         return [
                           PopupMenuItem<String>(
@@ -151,7 +150,6 @@ class _EditingScreenState extends State<EditingScreen> {
                             child: Text('Expose project for Collaboration'),
                           )
                         ];
-
                       },
                     ),
                   ],
@@ -163,23 +161,20 @@ class _EditingScreenState extends State<EditingScreen> {
               ),
               Expanded(
                 child: StackBoard(
-
                   customBuilder: (StackItem<StackItemContent> item) {
-
                     if (item is StackTextItem) {
                       currentTextContent = item;
-                      if(item.status == StackItemStatus.selected){
-                          showTextEditor = true;
-                          Future.delayed(Duration.zero,(){
-                            controller.update();
-                          });
+                      if (item.status == StackItemStatus.selected) {
+                        showTextEditor = true;
+                        Future.delayed(Duration.zero, () {
+                          controller.update();
+                        });
                       }
-                      if(item.status == StackItemStatus.idle){
-                          showTextEditor = false;
-                          Future.delayed(Duration.zero,(){
-                            controller.update();
-                          });
-
+                      if (item.status == StackItemStatus.idle) {
+                        showTextEditor = false;
+                        Future.delayed(Duration.zero, () {
+                          controller.update();
+                        });
                       }
 
                       return StackTextCase(

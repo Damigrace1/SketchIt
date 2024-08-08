@@ -225,7 +225,9 @@ class Signup extends StatelessWidget {
                             }
                           } on FirebaseAuthException catch (e) {
                             var message = e.message;
-                            _showalertdialog(message.toString(), context);
+                            // (message.toString(), context);
+
+                            Get.snackbar('Error', '$message');
                             controller.isloadingemail.value = false;
                           }
                         },
