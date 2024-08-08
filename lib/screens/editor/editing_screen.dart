@@ -228,6 +228,7 @@ class _EditingScreenState extends State<EditingScreen> {
                     ],
                   ),
                   controller: controller.stackBoardController,
+                  // shapeType: selectedShapeType,
                 ),
               ),
             ],

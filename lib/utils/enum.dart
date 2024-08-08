@@ -1,5 +1,7 @@
 
 enum Pentools {
   pen,
-  brush
+  brush, 
+  circle, 
+  rectangle,
 }
