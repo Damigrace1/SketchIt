@@ -24,7 +24,7 @@ class FirebaseService {
         "name" : projName,
         "data" : sketchData
       });
-      Get.snackbar('Success', 'Sketch saved successfully');
+      Get.snackbar('Success', 'Project saved successfully');
     } catch (e) {
       print('Error saving sketch data: $e');
       rethrow;

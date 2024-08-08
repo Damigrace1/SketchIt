@@ -217,62 +217,87 @@ Pentools selectedPenTool = Pentools.pen;
                       value: 3,
                       child: Column(
                         children: [
-                          CustomButton( onPressed: (){
-                            Navigator.pop(context);
-                            Get.dialog(
-                              AddTextWidget(
-                                controller: controller.stackBoardController,
-                              )
-                            );
-                            },
-                            width: 44.w,height: 38.h,filled: false,
-                            child:
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset('assets/icons/T.png',width: 10.w,),
-                                Text('Text',style: TextStyle(fontSize: 6.sp,
-                                    fontWeight: FontWeight.w500,color: Colors.black),)
-                              ],
-                            ),),
-                          SizedBox(height: 10.w,),
-                          CustomButton(
+                          Row(
+                            children: [
+                              CustomButton( onPressed: (){
+                                Navigator.pop(context);
+                                Get.dialog(
+                                  AddTextWidget(
+                                    controller: controller.stackBoardController,
+                                  )
+                                );
+                                },
+                                width: 44.w,height: 38.h,filled: false, child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset('assets/icons/T.png',width: 10.w,),
+                                    Text('Text',style: TextStyle(fontSize: 6.sp,
+                                        fontWeight: FontWeight.w500,color: Colors.black),)
+                                  ],
+                                ),),
+                              SizedBox(width: 10.w,),
+                              CustomButton(
 
-                            child:
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset('assets/icons/import.png',width: 14.w,),
-                                Text('Import Image',style: TextStyle(fontSize: 6.sp,
-                                    fontWeight: FontWeight.w500,color: Colors.black),)
-                              ],
-                            ),
-                            onPressed: ()async {
+                                child:
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset('assets/icons/import.png',width: 14.w,),
+                                    Text('Import Image',style: TextStyle(fontSize: 6.sp,
+                                        fontWeight: FontWeight.w500,color: Colors.black),)
+                                  ],
+                                ),
+                                onPressed: ()async {
 
-                              final ImagePicker picker = ImagePicker();
-                              final XFile? image =
-                              await picker.pickImage(source: ImageSource.gallery);
-                              if (image == null) return;
-                              Get.find<EditorController>().updateImage(File(image.path));
+                                  final ImagePicker picker = ImagePicker();
+                                  final XFile? image =
+                                  await picker.pickImage(source: ImageSource.gallery);
+                                  if (image == null) return;
+                                  Get.find<EditorController>().updateImage(File(image.path));
 
-                            },
-                            width: 44.w,height: 38.h,filled: false,),
-                          SizedBox(height: 10.w,),
-                          CustomButton(
-                            child:
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset('assets/icons/flip.png',width: 18.w,),
-                                Text('Symmetry',style: TextStyle(fontSize: 6.sp,
-                                    fontWeight: FontWeight.w500,color: Colors.black),)
-                              ],
-                            ),
-                            onPressed: ()async {
-                              controller.drawingController.turn();
-                            },
-                            width: 44.w,height: 38.h,filled: false,),
-
+                                },
+                                width: 44.w,height: 38.h,filled: false,),
+                            ],
+                          ),
+                          SizedBox(height: 10.h,),
+                         Row(
+                           children: [
+                             CustomButton(
+                               child:
+                               Column(
+                                 mainAxisAlignment: MainAxisAlignment.center,
+                                 children: [
+                                   Image.asset('assets/icons/flip.png',width: 18.w,),
+                                   Text('Symmetry',style: TextStyle(fontSize: 6.sp,
+                                       fontWeight: FontWeight.w500,color: Colors.black),)
+                                 ],
+                               ),
+                               onPressed: ()async {
+                                 controller.drawingController.turn();
+                               },
+                               width: 44.w,height: 38.h,filled: false,),
+                             SizedBox(width: 10.w,),
+                             CustomButton(
+                               child:
+                               Column(
+                                 mainAxisAlignment: MainAxisAlignment.center,
+                                 children: [
+                                   Icon(Icons.grid_4x4_sharp,color:  Colors.black,),
+                                   Text(
+                                     controller.hasGrid ? 'Remove Grid' :
+                                     'Add Grid',style: TextStyle(fontSize: 6.sp,
+                                       fontWeight: FontWeight.w500,color:
+                                       Colors.black),)
+                                 ],
+                               ),
+                               onPressed: ()async {
+                                 controller.hasGrid = !controller.hasGrid;
+                                 controller.update();
+                                 Navigator.pop(context);
+                               },
+                               width: 44.w,height: 38.h,filled: false,),
+                           ],
+                         )
 
                         ],
                       ),
@@ -293,6 +318,7 @@ Pentools selectedPenTool = Pentools.pen;
               iconWidth: 25.w,
               onTap: (){
                 controller.drawingController.undo();
+
               }, id: 6,
             ),
 

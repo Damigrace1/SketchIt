@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
+import 'package:flutter_drawing_board/paint_contents.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:sketch_it/controllers/editor_controller.dart';
+import 'package:sketch_it/models/sketch_model.dart';
 import 'package:sketch_it/screens/widgets/custom_button.dart';
 import 'package:sketch_it/service/firebase.dart';
 import 'package:stack_board/flutter_stack_board.dart';
@@ -32,8 +34,9 @@ import 'package:stack_board/stack_case.dart';
 import 'package:stack_board/stack_items.dart';
 
 class EditingScreen extends StatefulWidget {
-  const EditingScreen({Key? key, required this.projName}) : super(key: key);
+  const EditingScreen({Key? key, required this.projName, this.project}) : super(key: key);
 final String projName;
+final SketchModel? project;
   @override
   State<EditingScreen> createState() => _EditingScreenState();
 }
@@ -41,28 +44,28 @@ final String projName;
 double position = 0;
 
 class _EditingScreenState extends State<EditingScreen> {
+  List<dynamic>? oldProject;
+  final edittingController = Get.find<EditorController>();
   @override
   void initState() {
-    // TODO: implement initState
-    Get.put(EditorController());
+edittingController.reloadCanvas();
+if(widget.project != null){
+  edittingController.loadCanvasData(widget.project!.data??[]);
+}
     super.initState();
-    focusNode.addListener(() {
-      print(focusNode.hasFocus);
-    });
-  }
 
+  }
+bool saving = false;
   double sliderValue = 5;
   bool showTextEditor = false;
   StackTextItem? currentTextContent ;
-  FocusScopeNode focusNode = FocusScopeNode();
   Color textColor = Colors.white;
+
   @override
-  Widget build(BuildContext context) {;
+  Widget build(BuildContext context) {
     return GetBuilder<EditorController>(
       builder: (EditorController controller) {
 
-        // print(controller.drawingController.getJsonList());
-        // FirebaseService().collaborate('dami', 'work1');
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: 0,
@@ -130,8 +133,17 @@ class _EditingScreenState extends State<EditingScreen> {
                       width: 14.w,
                     ),
                     CustomButton(
+                      loading: saving,
                       text: 'Save',
-                      onPressed: () => controller.saveSketch(),
+                      onPressed: () async {
+                        setState(() {
+                          saving = true;
+                        });
+                       await  controller.saveSketch(widget.projName);
+                        setState(() {
+                          saving = false;
+                        });
+                      },
                       width: 65.w,
                       height: 28.h,
                     ),
@@ -163,28 +175,13 @@ class _EditingScreenState extends State<EditingScreen> {
               ),
               Expanded(
                 child: StackBoard(
-
                   customBuilder: (StackItem<StackItemContent> item) {
 
                     if (item is StackTextItem) {
-                      currentTextContent = item;
-                      if(item.status == StackItemStatus.selected){
-                          showTextEditor = true;
-                          Future.delayed(Duration.zero,(){
-                            controller.update();
-                          });
-                      }
-                      if(item.status == StackItemStatus.idle){
-                          showTextEditor = false;
-                          Future.delayed(Duration.zero,(){
-                            controller.update();
-                          });
-
-                      }
-
                       return StackTextCase(
                         item: item,
                       );
+
                     }
 
                     return const SizedBox.shrink();
@@ -195,11 +192,17 @@ class _EditingScreenState extends State<EditingScreen> {
                         controller: controller.drawingController,
                         background: controller.imageToBeEdited != null
                             ? Image.file(controller.imageToBeEdited!)
-                            : Container(
-                                width: Get.width,
-                                height: Get.height,
-                                color: controller.canvasColor,
-                              ),
+                            : controller.hasGrid ? GridPaper(
+                              child: Container(
+                                  width: Get.width,
+                                  height: Get.height,
+                                  color: controller.canvasColor,
+                                ) ,
+                            ) : Container(
+                          width: Get.width,
+                          height: Get.height,
+                          color: controller.canvasColor,
+                        ),
                       ),
                       Positioned(
                         top: 68.h,
