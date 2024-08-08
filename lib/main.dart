@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sketch_it/screens/home_screen.dart';
 import 'package:sketch_it/screens/splash_screen.dart';
-import 'package:sketch_it/screens/username/username.dart';
 import 'package:sketch_it/utils/colors.dart';
 import 'controller.dart/auth_controller.dart';
 
@@ -24,7 +22,7 @@ void main() async {
     projectId: dotenv.env['projectId']!,
   ));
 
- Get.put(SignupController());
+  Get.put(SignupController());
   runApp(const SketchItApp());
 }
 
@@ -37,15 +35,14 @@ class SketchItApp extends StatelessWidget {
         designSize: const Size(393, 852),
         builder: (_, child) {
           return GetMaterialApp(
-            title: 'Sketch  It',
-            theme: ThemeData(colorSchemeSeed: kPrimary),
-            debugShowCheckedModeBanner: false,
-            home:
-            const HomeScreen()
-            // Author: Dami
-            // Note: You can change the entry point if your task needs user to sign up.....
-          //  const Mainpage(),
-          );
+              title: 'Sketch  It',
+              theme: ThemeData(colorSchemeSeed: kPrimary),
+              debugShowCheckedModeBanner: false,
+              home: const Mainpage()
+              // Author: Dami
+              // Note: You can change the entry point if your task needs user to sign up.....
+              //  const Mainpage(),
+              );
         });
   }
 }
@@ -56,22 +53,23 @@ class Mainpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
-    FirebaseFirestore store = FirebaseFirestore.instance;
 
     return Scaffold(
       body: StreamBuilder<User?>(
           stream: auth.authStateChanges(),
           builder: (context, snapshot) {
-            Future<String> checkdata() async {
-              var collection = store.collection('username');
-              final user = auth.currentUser!;
-              Get.find<SignupController>().user = user;
+            // Future<String> checkdata() async {
+            //   var collection = store.collection('username');
+            //   final user = auth.currentUser!;
+            //   Get.find<SignupController>().user = user;
 
-              var docSnapshot = await collection.doc(user.uid).get();
-              final userName = docSnapshot.data()!['username'];
-              await Get.find<SignupController>().user?.updateDisplayName(userName);
-              return docSnapshot.data()!['username'];
-            }
+            //   var docSnapshot = await collection.doc(user.uid).get();
+            //   final userName = docSnapshot.data()!['username'];
+            //   await Get.find<SignupController>()
+            //       .user
+            //       ?.updateDisplayName(userName);
+            //   return docSnapshot.data()!['username'];
+            // }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -84,11 +82,7 @@ class Mainpage extends StatelessWidget {
               );
             }
             if (snapshot.hasData) {
-              if (checkdata().isNull) {
-                return const Username();
-              } else {
-                return const HomeScreen();
-              }
+              return const HomeScreen();
             } else {
               return const SplashScreen();
             }
