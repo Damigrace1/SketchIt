@@ -14,9 +14,9 @@ import 'package:sketch_it/screens/widgets/custom_button.dart';
 import 'package:sketch_it/utils/colors.dart';
 import 'package:stack_board/flutter_stack_board.dart';
 import 'package:stack_board/stack_items.dart';
-
 import '../../../utils/common_functions.dart';
 import '../../../utils/enum.dart';
+
 import '../../widgets/tool_bar_item.dart';
 import '../editing_screen.dart';
 import 'add_text_widget.dart';
@@ -32,6 +32,7 @@ class ToolBar extends StatefulWidget {
 
 Color textColor = Colors.black;
 Color drawingcolor = Colors.red;
+
 
 class _ToolBarState extends State<ToolBar> {
   Pentools selectedPenTool = Pentools.pen;
@@ -101,6 +102,12 @@ class _ToolBarState extends State<ToolBar> {
                                       paintContent = SimpleLine();
                                     case Pentools.brush:
                                       paintContent = SmoothLine();
+                                    case Pentools.circle:
+                                      paintContent = Circle();
+                                    case Pentools.rectangle:
+                                      paintContent = Rectangle();
+                                    case Pentools.line:
+                                      paintContent = StraightLine();
                                   }
 
                                   controller.drawingController
@@ -108,6 +115,7 @@ class _ToolBarState extends State<ToolBar> {
 
                                   // controller.drawingController
                                   //     .setStyle(drawingColor);
+
                                 },
                                 width: 54.w,
                                 height: 40.h,
@@ -157,6 +165,7 @@ class _ToolBarState extends State<ToolBar> {
                   showCustomMenu(context, tapPosition, [
                     PopupMenuItem<int>(
                       value: 1,
+
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

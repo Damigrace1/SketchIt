@@ -29,6 +29,7 @@ class EditorController extends GetxController {
   int selectedToolId = 2;
   bool hasGrid = false;
 
+
   FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final SignupController _signupController = Get.find<SignupController>();
@@ -97,6 +98,7 @@ class EditorController extends GetxController {
   }
 
   Future<void> saveSketch(String projName) async {
+
 
     try {
       final sketchData = drawingController.getJsonList() +

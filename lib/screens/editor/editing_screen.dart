@@ -299,6 +299,7 @@ bool saving = false;
                     ],
                   ),
                   controller: controller.stackBoardController,
+                  // shapeType: selectedShapeType,
                 ),
               ),
             ],
