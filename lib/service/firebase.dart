@@ -49,7 +49,7 @@ class FirebaseService {
        _firestore.collection('collaborate').doc(projId).
    snapshots().listen((data){
      print(data.data()?.length);
-  Get.find<EditorController>().loadCanvasData(data.data()?['data']);
+  Get.find<EditorController>().loadCanvasData(data.data()?['data']??[]);
    }
       );
        Get.snackbar('Yay!', 'Collaboration started');

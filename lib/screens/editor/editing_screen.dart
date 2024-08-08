@@ -37,6 +37,7 @@ class EditingScreen extends StatefulWidget {
   const EditingScreen({Key? key, required this.projName, this.project}) : super(key: key);
 final String projName;
 final SketchModel? project;
+
   @override
   State<EditingScreen> createState() => _EditingScreenState();
 }
@@ -60,12 +61,14 @@ bool saving = false;
   double sliderValue = 5;
   bool showTextEditor = false;
   StackTextItem? currentTextContent ;
+
   Color textColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<EditorController>(
       builder: (EditorController controller) {
+
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: 0,
@@ -100,7 +103,7 @@ bool saving = false;
                   alignment: Alignment.center,
                   // height: 40.h,
                   child: Visibility(
-                    visible: controller.showToolbar && !showTextEditor ,
+                    visible: controller.showToolbar && !showTextEditor,
                     child: Slider(
                       value: sliderValue,
                       min: 1,
@@ -127,7 +130,10 @@ bool saving = false;
                   actions: [
                     InkWell(
                       splashColor: Colors.transparent,
-                      child: Image.asset('assets/icons/export.png',width: 21.w,),
+                      child: Image.asset(
+                        'assets/icons/export.png',
+                        width: 21.w,
+                      ),
                     ),
                     SizedBox(
                       width: 14.w,
@@ -147,7 +153,6 @@ bool saving = false;
                       width: 65.w,
                       height: 28.h,
                     ),
-
                     PopupMenuButton<String>(
                       onSelected: (String value) {
                         // if(value == '1' ){
@@ -206,6 +211,7 @@ bool saving = false;
                           FirebaseService().listenToCollaborate('dami@${widget.projName}');
                         }
                       },
+
                       itemBuilder: (BuildContext context) {
                         return [
                           // PopupMenuItem<String>(
@@ -217,7 +223,6 @@ bool saving = false;
                             child: Text('Expose project for Collaboration'),
                           )
                         ];
-
                       },
                     ),
                   ],
@@ -238,8 +243,8 @@ bool saving = false;
               Expanded(
                 child: StackBoard(
                   customBuilder: (StackItem<StackItemContent> item) {
-
                     if (item is StackTextItem) {
+
                       return StackTextCase(
                         item: item,
                       );

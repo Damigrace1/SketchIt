@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sketch_it/screens/home_screen.dart';
 import 'package:sketch_it/screens/splash_screen.dart';
-import 'package:sketch_it/screens/username/username.dart';
 import 'package:sketch_it/utils/colors.dart';
 import 'controller.dart/auth_controller.dart';
 
@@ -24,7 +23,7 @@ void main() async {
     projectId: dotenv.env['projectId']!,
   ));
 
- Get.put(SignupController());
+  Get.put(SignupController());
   runApp(const SketchItApp());
 }
 
@@ -41,11 +40,12 @@ class SketchItApp extends StatelessWidget {
             theme: ThemeData(colorSchemeSeed: kPrimary),
             debugShowCheckedModeBanner: false,
             home:
-            const HomeScreen()
+            //HomeScreen()
             // Author: Dami
             // Note: You can change the entry point if your task needs user to sign up.....
-            //const Mainpage(),
+            const Mainpage(),
           );
+
         });
   }
 }
@@ -72,6 +72,7 @@ class Mainpage extends StatelessWidget {
               return docSnapshot.data()!['username'];
             }
 
+
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -83,11 +84,7 @@ class Mainpage extends StatelessWidget {
               );
             }
             if (snapshot.hasData) {
-              if (checkdata().isNull) {
-                return const Username();
-              } else {
-                return const HomeScreen();
-              }
+              return const HomeScreen();
             } else {
               return const SplashScreen();
             }
