@@ -18,7 +18,7 @@ import '../controller.dart/auth_controller.dart';
 class EditorController extends GetxController {
   File? imageToBeEdited;
   late DrawingController drawingController;
-  late StackBoardController textController;
+  late StackBoardController stackBoardController;
   double strokeWidth = 9;
   Color canvasColor = Colors.white;
   bool showToolbar = true;
@@ -33,7 +33,7 @@ class EditorController extends GetxController {
     // TODO: implement onInit
 
  drawingController  = DrawingController();
- textController = StackBoardController();
+ stackBoardController = StackBoardController();
     super.onInit();
   }
 

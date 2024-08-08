@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:sketch_it/screens/editor/editing_screen.dart';
 import 'package:sketch_it/screens/profile.dart';
+import 'package:sketch_it/screens/widgets/custom_button.dart';
 import 'package:sketch_it/utils/colors.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,7 +18,7 @@ class HomeScreen extends StatelessWidget {
         toolbarHeight: 48.h,
         backgroundColor: kGrey,
         title: const Text(
-          'My Work',
+          'SketchIt',
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
         actions: [
@@ -43,7 +44,29 @@ class HomeScreen extends StatelessWidget {
             InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                Get.to(() => EditingScreen());
+                String? projName;
+                Get.dialog(
+                  AlertDialog(
+                    title: Text('Enter Project Name',style: TextStyle(fontWeight: FontWeight.w500),),
+                    content: TextField(
+                      onChanged: (v) => projName = v,
+                    ),
+                    actions: [
+                      CustomButton(onPressed: (){
+                        if(projName == null) {
+                          Get.snackbar('Project Creation Failed', 'You have to enter a project name');
+                          return;
+                        }
+                        Get.off(() => EditingScreen(projName: projName! ,));
+                      },text: 'Continue',),
+                      SizedBox(height: 10.h,),
+                      CustomButton(onPressed: (){
+                        Navigator.pop(context);
+                      },text: 'Cancel',filled: false,textColor: Colors.black,),
+                    ],
+                  )
+                );
+
               },
               child: Container(
                 width: 100.w,
