@@ -23,18 +23,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+ // final String uid;
   late EditorController editorController;
-  bool loadScreen = false;
   @override
   void initState() {
     // TODO: implement initState
     editorController = Get.put(EditorController());
     Get.put(ProfileController());
-    Future.delayed(Duration(seconds: 1),(){
-      setState(() {
-        loadScreen = true;
-      });
-    });
+
     super.initState();
 
   }
@@ -42,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+   // print(Get.find<ProfileController>().uId!.value);
     return
         Scaffold(
           appBar: AppBar(
@@ -122,7 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           body:
-          !loadScreen ?  Center(child:  CircularProgressIndicator(),) :
           FutureBuilder(
             future: editorController.loadSketch(),
             builder: (BuildContext context, AsyncSnapshot<List<SketchModel>> savedProjects) {

@@ -43,7 +43,7 @@ class SketchItApp extends StatelessWidget {
             home:
             // Author: Dami
             // Note: You can change the entry point if your task needs user to sign up.....
-            const Mainpage(),
+            const Signup(),
           );
 
         });

@@ -22,21 +22,21 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
-    super.onInit();
     fetchdetails();
+    super.onInit();
+
   }
 
   Future fetchdetails() async {
-    //userUid is the current auth user
     final user = auth.currentUser;
+    email?.value = user!.email.toString();
+    uId?.value = user!.uid.toString();
 
     final docSnapshot = await _users.doc(user?.uid).get();
 
     Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
 
     name?.value = data!['username'];
-    email?.value = user!.email.toString();
-    uId?.value = user!.uid.toString();
 
     return data;
   }

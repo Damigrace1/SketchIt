@@ -37,7 +37,7 @@ class FirebaseService {
   // Retrieve sketch data for a particular user
   Future<List<QueryDocumentSnapshot>> getSketchData() async {
     try {
-    //  print('useID:${Get.find<ProfileController>().uId!.value}');
+      print('useID:${Get.find<ProfileController>().uId!.value}');
       QuerySnapshot snapshot = await _firestore.collection('users').doc(Get.find<ProfileController>().uId!.value).collection('myworks').get();
       return snapshot.docs;
     } catch (e) {
