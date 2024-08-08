@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:sketch_it/controller.dart/auth_controller.dart';
+import 'package:sketch_it/controller.dart/user_controller.dart';
 import 'package:sketch_it/screens/editor/editing_screen.dart';
 import 'package:sketch_it/screens/profile.dart';
 import 'package:sketch_it/screens/widgets/custom_button.dart';
@@ -22,12 +24,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late EditorController editorController;
+  bool loadScreen = false;
   @override
   void initState() {
     // TODO: implement initState
     editorController = Get.put(EditorController());
+    Get.put(ProfileController());
+    Future.delayed(Duration(seconds: 1),(){
+      setState(() {
+        loadScreen = true;
+      });
+    });
     super.initState();
+
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          body:   FutureBuilder(
+          body:
+          !loadScreen ?  Center(child:  CircularProgressIndicator(),) :
+          FutureBuilder(
             future: editorController.loadSketch(),
             builder: (BuildContext context, AsyncSnapshot<List<SketchModel>> savedProjects) {
               if(!savedProjects.hasData){

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sketch_it/screens/auth/sign_up.dart';
 import 'package:sketch_it/screens/home_screen.dart';
 import 'package:sketch_it/screens/splash_screen.dart';
 import 'package:sketch_it/utils/colors.dart';
@@ -40,7 +41,6 @@ class SketchItApp extends StatelessWidget {
             theme: ThemeData(colorSchemeSeed: kPrimary),
             debugShowCheckedModeBanner: false,
             home:
-            //HomeScreen()
             // Author: Dami
             // Note: You can change the entry point if your task needs user to sign up.....
             const Mainpage(),

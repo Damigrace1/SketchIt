@@ -8,6 +8,8 @@ class ProfileController extends GetxController {
   RxBool isloadingdoc = false.obs;
   RxString? name = ''.obs;
   RxString? email = ''.obs;
+  RxString? uId = ''.obs;
+
 
   final _usernamecontroller = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -34,6 +36,7 @@ class ProfileController extends GetxController {
 
     name?.value = data!['username'];
     email?.value = user!.email.toString();
+    uId?.value = user!.uid.toString();
 
     return data;
   }

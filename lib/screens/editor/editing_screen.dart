@@ -19,6 +19,7 @@ import 'package:stack_board/flutter_stack_board.dart';
 import 'package:stack_board/stack_board_item.dart';
 import 'package:stack_board/stack_items.dart';
 
+import '../../controller.dart/user_controller.dart';
 import '../../utils/colors.dart';
 import '../../utils/common_functions.dart';
 import 'component/tool_bar.dart';
@@ -200,15 +201,15 @@ bool saving = false;
                             FirebaseService().saveToCollaborate(
                                 controller.drawingController.getJsonList() +
                                     controller.stackBoardController.getAllData()
-                                , 'dami@${widget.projName}');
+                                , '${Get.find<ProfileController>().name?.value??''}@${widget.projName}');
                           });
                           controller.stackBoardController.addListener((){
                             FirebaseService().saveToCollaborate(
                                 controller.drawingController.getJsonList() +
                                     controller.stackBoardController.getAllData(),
-                                'dami@${widget.projName}');
+                                '${Get.find<ProfileController>().name?.value??''}@${widget.projName}');
                           });
-                          FirebaseService().listenToCollaborate('dami@${widget.projName}');
+                          FirebaseService().listenToCollaborate('${Get.find<ProfileController>().name?.value??''}@${widget.projName}');
                         }
                       },
 
@@ -238,7 +239,7 @@ bool saving = false;
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(vertical: 6.h),
                   color: Colors.green,
-                 child: Text('Your Collaboration project id is dami@${widget.projName}'),
+                 child: Text('Your Collaboration project id is ${Get.find<ProfileController>().name?.value??''}@${widget.projName}'),
                 ),
               Expanded(
                 child: StackBoard(

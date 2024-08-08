@@ -7,6 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sketch_it/utils/validator.dart';
 
 class SignupController extends GetxController {
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   //SIGN UP
   final _emailcontroller = TextEditingController();
   final _usernamecontroller = TextEditingController();
@@ -71,7 +74,6 @@ class SignupController extends GetxController {
         email: email, password: password);
     user = u.user;
     isloadingemail.value = false;
-
     return true;
   }
 
@@ -80,6 +82,7 @@ class SignupController extends GetxController {
     final u =
         await auth.signInWithEmailAndPassword(email: email, password: password);
     user = u.user;
+    print('jjjjj:${u.user?.uid}');
     isloadingemail.value = false;
   }
 

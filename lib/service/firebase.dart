@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sketch_it/controllers/editor_controller.dart';
 
+import '../controller.dart/user_controller.dart';
+
 class FirebaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -18,9 +20,9 @@ class FirebaseService {
   }
 
   // Save sketch data for a particular user
-  Future<void> saveSketchData(String userId, List sketchData, String projName) async {
+  Future<void> saveSketchData( List sketchData, String projName) async {
     try {
-      await _firestore.collection('users').doc(userId).collection('myworks').doc(projName).set({
+      await _firestore.collection('users').doc(Get.find<ProfileController>().uId!.value).collection('myworks').doc(projName).set({
       'timestamp' : FieldValue.serverTimestamp(),
         "name" : projName,
         "data" : sketchData
@@ -33,9 +35,10 @@ class FirebaseService {
   }
 
   // Retrieve sketch data for a particular user
-  Future<List<QueryDocumentSnapshot>> getSketchData(String userId, String projName) async {
+  Future<List<QueryDocumentSnapshot>> getSketchData() async {
     try {
-      QuerySnapshot snapshot = await _firestore.collection('users').doc(userId).collection('myworks').get();
+    //  print('useID:${Get.find<ProfileController>().uId!.value}');
+      QuerySnapshot snapshot = await _firestore.collection('users').doc(Get.find<ProfileController>().uId!.value).collection('myworks').get();
       return snapshot.docs;
     } catch (e) {
       print('Error fetching sketch data: $e');

@@ -16,6 +16,7 @@ import 'package:stack_board/stack_items.dart';
 
 
 import '../controller.dart/auth_controller.dart';
+import '../controller.dart/user_controller.dart';
 
 
 class EditorController extends GetxController {
@@ -100,7 +101,7 @@ class EditorController extends GetxController {
     try {
       final sketchData = drawingController.getJsonList() +
           stackBoardController.getAllData();
-     await FirebaseService().saveSketchData('dami', sketchData, projName);
+     await FirebaseService().saveSketchData( sketchData, projName);
       // await _users.doc(userId).set({
       //   // 'saved sketches': sketchData.toString(),
       // });
@@ -122,7 +123,7 @@ class EditorController extends GetxController {
 
   Future<List <SketchModel> > loadSketch() async {
     try{
-    final docs =   await FirebaseService().getSketchData('dami', 'work1');
+    final docs =   await FirebaseService().getSketchData();
     List <SketchModel> projects = docs.map((doc)=> SketchModel.fromJson(doc.data() as Map<String, dynamic>)).toList();
     return projects;
     } catch (e) {

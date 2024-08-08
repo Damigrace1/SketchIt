@@ -159,7 +159,6 @@ class SignIn extends StatelessWidget {
                                               controller
                                                   .signpasswordController.text,
                                             );
-                                            print('ressssssssss:$res');
                                             Get.offAll(
                                                 () => const HomeScreen());
                                           }
