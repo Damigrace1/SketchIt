@@ -100,7 +100,7 @@ class _ToolBarState extends State<ToolBar> {
                                     case Pentools.brush:
                                       paintContent = SmoothLine();
                                     case Pentools.circle:
-                                      paintContent = Rectangle();
+                                      paintContent = Circle();
                                     case Pentools.rectangle:
                                       paintContent = Rectangle();
                                   }
