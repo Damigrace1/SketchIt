@@ -16,6 +16,7 @@ import 'package:stack_board/flutter_stack_board.dart';
 import 'package:stack_board/stack_items.dart';
 
 import '../../../utils/common_functions.dart';
+import '../../../utils/enum.dart';
 import '../../widgets/tool_bar_item.dart';
 import '../editing_screen.dart';
 import 'add_text_widget.dart';
@@ -27,7 +28,11 @@ class ToolBar extends StatefulWidget {
   State<ToolBar> createState() => _ToolBarState();
 }
 Color textColor = Colors.black;
+
+
+
 class _ToolBarState extends State<ToolBar> {
+Pentools selectedPenTool = Pentools.pen;
 
   @override
   void initState() {
@@ -36,7 +41,6 @@ class _ToolBarState extends State<ToolBar> {
   }
   @override
   Widget build(BuildContext context) {
-
     return GetBuilder<EditorController>(builder: (EditorController controller) {
       controller.drawingController.getJsonList();
       return AnimatedContainer(
@@ -61,13 +65,61 @@ class _ToolBarState extends State<ToolBar> {
                 controller.update();
               }, id: 0,
             ),
+            ToolbarItem(
+              hasMoreChildren: true,
+              showHighlight: true,
+              icon: 'assets/icons/${selectedPenTool.name}.png',
+              onTapDown: (TapDownDetails details) {
+                final tapPosition = details.globalPosition;
+                setState(() {
+                  position = 0.h;
+                });
 
-
+                showCustomMenu(context, tapPosition,
+                    [PopupMenuItem<int>(
+                      value: 3,
+                      child: Column(
+                        children: List.generate(Pentools.values.length, (index){
+                          return  Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomButton( onPressed: (){
+                                Navigator.pop(context);
+                                setState(() {
+                                  selectedPenTool = Pentools.values[index];
+                                });
+                                 PaintContent paintContent;
+                                switch (selectedPenTool) {
+                                  case   Pentools.pen : paintContent =  SimpleLine();
+                                  case Pentools.brush: paintContent = SmoothLine();
+                                }
+                                controller.drawingController.setPaintContent(
+                                  paintContent
+                                );
+                              }, width: 54.w,height: 40.h,filled: false,
+                                child:
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset('assets/icons/${Pentools.values[index].name}.png',width: 20.w,),
+                                    Text(Pentools.values[index].name.capitalizeFirst??'',style: TextStyle(fontSize: 8.sp,
+                                        fontWeight: FontWeight.w500,color: Colors.black),)
+                                  ],
+                                ),),
+                              SizedBox(height: 10.h,)
+                            ],
+                          );
+                        }),
+                      ),
+                    ),]);
+              },
+              id: 7,
+              iconWidth: 27.w,
+            ),
             ToolbarItem(
               showHighlight: true,
               icon: 'assets/toolbar/dropper.png',
               iconWidth: 33.w,
-              hasMoreChildren: true,
               onTapDown: (TapDownDetails details) {
                 final tapPosition = details.globalPosition;
                 setState(() {
@@ -79,7 +131,8 @@ class _ToolBarState extends State<ToolBar> {
                       value: 3,
                       child: Column(
                         children: [
-                          CustomButton( onPressed: (){
+                          CustomButton(
+                            onPressed: (){
                             Navigator.pop(context);
                             Get.dialog(
                                 AddTextWidget(

@@ -138,7 +138,6 @@ class SignUpPage extends StatelessWidget {
                   width: 200.w,
                   text: 'Google',
                   onPressed: () {
-                    Get.offAll(EditingScreen());
                   },
                 ),
               )

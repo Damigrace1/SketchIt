@@ -32,8 +32,8 @@ import 'package:stack_board/stack_case.dart';
 import 'package:stack_board/stack_items.dart';
 
 class EditingScreen extends StatefulWidget {
-  const EditingScreen({Key? key}) : super(key: key);
-
+  const EditingScreen({Key? key, required this.projName}) : super(key: key);
+final String projName;
   @override
   State<EditingScreen> createState() => _EditingScreenState();
 }
@@ -60,10 +60,7 @@ class _EditingScreenState extends State<EditingScreen> {
   Widget build(BuildContext context) {;
     return GetBuilder<EditorController>(
       builder: (EditorController controller) {
-        controller.stackBoardController.updateItem(StackTextItem(
-          size: const Size(200, 100),
-          content: TextItemContent(data: 'New 2',style: TextStyle(color: Colors.red)),
-        ));
+
         // print(controller.drawingController.getJsonList());
         // FirebaseService().collaborate('dami', 'work1');
         return Scaffold(
@@ -125,11 +122,9 @@ class _EditingScreenState extends State<EditingScreen> {
                   toolbarHeight: 48.h,
                   backgroundColor: kGrey,
                   actions: [
-                    CustomButton(
-                      text: 'Load',
-                      onPressed: () => controller.loadSketch(),
-                      width: 65.w,
-                      height: 28.h,
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      child: Image.asset('assets/icons/export.png',width: 21.w,),
                     ),
                     SizedBox(
                       width: 14.w,
@@ -140,12 +135,28 @@ class _EditingScreenState extends State<EditingScreen> {
                       width: 65.w,
                       height: 28.h,
                     ),
-                    SizedBox(
-                      width: 14.w,
+
+                    PopupMenuButton<String>(
+                      onSelected: (String value) {
+
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          PopupMenuItem<String>(
+                            value: '1',
+                            child: Text('Join a project in collaboration'),
+                          ),
+                          PopupMenuItem<String>(
+                            value: '2',
+                            child: Text('Expose project for Collaboration'),
+                          )
+                        ];
+
+                      },
                     ),
                   ],
                   title: Text(
-                    'My Work',
+                    widget.projName,
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
