@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
-import 'package:flutter_drawing_board/paint_contents.dart';
 // import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:get/get.dart';
 import 'package:sketch_it/service/firebase.dart';
@@ -24,16 +23,6 @@ class EditorController extends GetxController {
   Color canvasColor = Colors.white;
   bool showToolbar = true;
   int selectedToolId = 2;
-  final Map<String, dynamic> _testLine1 = {
-    'type': 'StraightLine',
-    'points': [
-      Offset(100.0, 100.0),
-      Offset(200.0, 200.0),
-    ],
-    'strokeWidth': 5.0,
-    'color': Colors.blue,
-  };
-  
 
   FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -64,11 +53,7 @@ class EditorController extends GetxController {
     update();
   }
 
-  // void _addTestLine() {
-  //   drawingController.addContent(StraightLine.fromJson(_testLine1));
-  //   // drawingController
-  //       // .addContents(<PaintContent>[StraightLine.fromJson(_testLine2)]);
-  // }
+  
 
   Future<void> saveSketch() async {
 
