@@ -11,6 +11,7 @@ import 'package:sketch_it/utils/colors.dart';
 
 import '../controllers/editor_controller.dart';
 import '../models/sketch_model.dart';
+import '../service/firebase.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -51,6 +52,61 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(
                 width: 18.w,
+              ),
+              PopupMenuButton<String>(
+                onSelected: (String value) {
+                  if(value == '1' ){
+                    String? projId;
+                    Get.dialog(
+                        AlertDialog(
+                          title: Text('Enter Project Id',style: TextStyle(fontWeight: FontWeight.w500),),
+                          content: TextField(
+                            onChanged: (v) => projId = v,
+                          ),
+                          actions: [
+                            CustomButton(onPressed: () async {
+                              if(projId == null || !projId!.contains('@')) {
+                                Get.snackbar('Collaboration Failed', 'Invalid or empty ID');
+                                return;
+                              }
+                              FirebaseService().listenToCollaborate(projId!);
+                              editorController.drawingController.addListener((){
+                                FirebaseService().saveToCollaborate(
+                                    editorController.drawingController.getJsonList() +
+                                        editorController.stackBoardController.getAllData()
+                                    , projId!);
+                              });
+                              editorController.stackBoardController.addListener((){
+                                FirebaseService().saveToCollaborate(
+                                    editorController.drawingController.getJsonList() +
+                                        editorController.stackBoardController.getAllData()
+                                    , projId!);
+                              });
+
+                              await Get.off(() => EditingScreen(projName: projId!.split('@')[1] ,));
+                              setState(() {
+
+                              });
+                            },text: 'Collaborate',),
+                            SizedBox(height: 10.h,),
+                            CustomButton(onPressed: (){
+                              Navigator.pop(context);
+                            },text: 'Cancel',filled: false,textColor: Colors.black,),
+                          ],
+                        )
+                    );
+                  }
+
+                },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem<String>(
+                      value: '1',
+                      child: Text('Join a project in collaboration'),
+                    ),
+                  ];
+
+                },
               ),
             ],
           ),

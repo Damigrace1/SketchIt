@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:sketch_it/controllers/editor_controller.dart';
 
 class FirebaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -42,15 +43,33 @@ class FirebaseService {
     }
   }
 
- void collaborate(String userId, String projName) async {
+ void listenToCollaborate(String projId) async {
     try {
-      print('started listening');
-       _firestore.collection('users').doc(userId).collection('myworks').doc(projName).
-   snapshots().listen((data)=>print(data)
+
+       _firestore.collection('collaborate').doc(projId).
+   snapshots().listen((data){
+     print(data.data()?.length);
+  Get.find<EditorController>().loadCanvasData(data.data()?['data']);
+   }
       );
+       Get.snackbar('Yay!', 'Collaboration started');
     } catch (e) {
       print('Error saving sketch data: $e');
       rethrow;
     }
   }
+  Future<void> saveToCollaborate( List sketchData, String projId) async {
+    try {
+      await _firestore.collection('collaborate').doc(projId).set({
+        'timestamp' : FieldValue.serverTimestamp(),
+        "name" : projId.split('@')[1],
+        "data" : sketchData
+      });
+      print('done');
+    } catch (e) {
+      print('Error saving sketch data: $e');
+      rethrow;
+    }
+  }
+
 }

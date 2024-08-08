@@ -229,35 +229,7 @@ class Signup extends StatelessWidget {
                               fontSize: 16),
                         ),
                       ),
-                      addVerticalSpacing(12),
-                      GestureDetector(
-                        onTap: () async {
-                          try {
-                            await controller.googleLogin();
-                            Get.offAll(() => const Username());
-                          } on FirebaseAuthException catch (e) {
-                            var message = e.message;
-                            _showalertdialog(message.toString(), context);
-                          }
-                        },
-                        child: Container(
-                          height: 56,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              border: Border.all(color: kgrey4),
-                              borderRadius: BorderRadius.circular(16)),
-                          child: Center(
-                              child: controller.isloadinggoogle.value == false
-                                  ? Image.asset(
-                                      'assets/images/google.png',
-                                      height: 22,
-                                    )
-                                  : const CircularProgressIndicator(
-                                      color: kgrey4,
-                                    )),
-                        ),
-                      ),
+
                     ],
                   ),
                 )),

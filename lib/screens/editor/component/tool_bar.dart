@@ -282,7 +282,8 @@ Pentools selectedPenTool = Pentools.pen;
                                Column(
                                  mainAxisAlignment: MainAxisAlignment.center,
                                  children: [
-                                   Icon(Icons.grid_4x4_sharp,color:  Colors.black,),
+                                   Icon(Icons.grid_4x4_sharp,color:  Colors.black,
+                                   size: 18.w,),
                                    Text(
                                      controller.hasGrid ? 'Remove Grid' :
                                      'Add Grid',style: TextStyle(fontSize: 6.sp,

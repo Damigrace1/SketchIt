@@ -44,7 +44,7 @@ class SketchItApp extends StatelessWidget {
             const HomeScreen()
             // Author: Dami
             // Note: You can change the entry point if your task needs user to sign up.....
-          //  const Mainpage(),
+            //const Mainpage(),
           );
         });
   }
@@ -63,10 +63,9 @@ class Mainpage extends StatelessWidget {
           stream: auth.authStateChanges(),
           builder: (context, snapshot) {
             Future<String> checkdata() async {
-              var collection = store.collection('username');
+              var collection = store.collection('users');
               final user = auth.currentUser!;
               Get.find<SignupController>().user = user;
-
               var docSnapshot = await collection.doc(user.uid).get();
               final userName = docSnapshot.data()!['username'];
               await Get.find<SignupController>().user?.updateDisplayName(userName);

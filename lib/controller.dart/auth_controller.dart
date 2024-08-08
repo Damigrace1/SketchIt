@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sketch_it/utils/validator.dart';
 
 class SignupController extends GetxController {
@@ -42,24 +42,24 @@ class SignupController extends GetxController {
 
   RxBool get passwordVisible => _passwordVisible;
 
-  Future googleLogin() async {
-    isloadinggoogle.value = true;
-    FirebaseAuth auth = FirebaseAuth.instance;
-
-    final googlesignIn = GoogleSignIn();
-    final googleUser = await googlesignIn.signIn();
-    if (googleUser != null) {
-      final googleAuth = await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken,
-        accessToken: googleAuth.accessToken,
-      );
-      final u = await auth.signInWithCredential(credential);
-      user = u.user;
-      isloadinggoogle.value = false;
-    }
-    isloadinggoogle.value = false;
-  }
+  // Future googleLogin() async {
+  //   isloadinggoogle.value = true;
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //
+  //   final googlesignIn = GoogleSignIn();
+  //   final googleUser = await googlesignIn.signIn();
+  //   if (googleUser != null) {
+  //     final googleAuth = await googleUser.authentication;
+  //     final AuthCredential credential = GoogleAuthProvider.credential(
+  //       idToken: googleAuth.idToken,
+  //       accessToken: googleAuth.accessToken,
+  //     );
+  //     final u = await auth.signInWithCredential(credential);
+  //     user = u.user;
+  //     isloadinggoogle.value = false;
+  //   }
+  //   isloadinggoogle.value = false;
+  // }
 
   Future signUp(String email, String password) async {
     isloadingemail.value = true;

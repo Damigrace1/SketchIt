@@ -45,6 +45,7 @@ double position = 0;
 
 class _EditingScreenState extends State<EditingScreen> {
   List<dynamic>? oldProject;
+  bool collabStarted = false;
   final edittingController = Get.find<EditorController>();
   @override
   void initState() {
@@ -65,7 +66,6 @@ bool saving = false;
   Widget build(BuildContext context) {
     return GetBuilder<EditorController>(
       builder: (EditorController controller) {
-
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: 0,
@@ -150,14 +150,68 @@ bool saving = false;
 
                     PopupMenuButton<String>(
                       onSelected: (String value) {
-
+                        // if(value == '1' ){
+                        //   String? projId;
+                        //   Get.dialog(
+                        //       AlertDialog(
+                        //         title: Text('Enter Project Id',style: TextStyle(fontWeight: FontWeight.w500),),
+                        //         content: TextField(
+                        //           onChanged: (v) => projId = v,
+                        //         ),
+                        //         actions: [
+                        //           CustomButton(onPressed: () async {
+                        //             if(projId == null) {
+                        //               Get.snackbar('Collaboration Failed', 'You have to enter a project id');
+                        //               return;
+                        //             }
+                        //             controller.drawingController.addListener((){
+                        //               FirebaseService().saveToCollaborate('dami',
+                        //                   controller.drawingController.getJsonList() +
+                        //                       controller.stackBoardController.getAllData()
+                        //                   , widget.projName);
+                        //             });
+                        //             controller.stackBoardController.addListener((){
+                        //               FirebaseService().saveToCollaborate('dami',
+                        //                   controller.drawingController.getJsonList() +
+                        //                       controller.stackBoardController.getAllData()
+                        //                   , widget.projName);
+                        //             });
+                        //             FirebaseService().listenToCollaborate(projId!);
+                        //             Navigator.pop(context);
+                        //           },text: 'Collaborate',),
+                        //           SizedBox(height: 10.h,),
+                        //           CustomButton(onPressed: (){
+                        //             Navigator.pop(context);
+                        //           },text: 'Cancel',filled: false,textColor: Colors.black,),
+                        //         ],
+                        //       )
+                        //   );
+                        // }
+                         if(value == '2'){
+                          setState(() {
+                            collabStarted = true;
+                          });
+                          controller.drawingController.addListener((){
+                            FirebaseService().saveToCollaborate(
+                                controller.drawingController.getJsonList() +
+                                    controller.stackBoardController.getAllData()
+                                , 'dami@${widget.projName}');
+                          });
+                          controller.stackBoardController.addListener((){
+                            FirebaseService().saveToCollaborate(
+                                controller.drawingController.getJsonList() +
+                                    controller.stackBoardController.getAllData(),
+                                'dami@${widget.projName}');
+                          });
+                          FirebaseService().listenToCollaborate('dami@${widget.projName}');
+                        }
                       },
                       itemBuilder: (BuildContext context) {
                         return [
-                          PopupMenuItem<String>(
-                            value: '1',
-                            child: Text('Join a project in collaboration'),
-                          ),
+                          // PopupMenuItem<String>(
+                          //   value: '1',
+                          //   child: Text('Join a project in collaboration'),
+                          // ),
                           PopupMenuItem<String>(
                             value: '2',
                             child: Text('Expose project for Collaboration'),
@@ -173,6 +227,14 @@ bool saving = false;
                   ),
                 ),
               ),
+              if(collabStarted)
+                Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(vertical: 6.h),
+                  color: Colors.green,
+                 child: Text('Your Collaboration project id is dami@${widget.projName}'),
+                ),
               Expanded(
                 child: StackBoard(
                   customBuilder: (StackItem<StackItemContent> item) {
